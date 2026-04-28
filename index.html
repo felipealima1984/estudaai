@@ -1,0 +1,2322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estuda.AI — CACD & Direito</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0e0f14;--bg2:#15161e;--bg3:#1c1d28;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --text:#e8e6df;--muted:#7a7870;
+  --cacd:#c8a96e;--dir:#6e9bc8;--green:#6ec89b;--red:#c86e6e;
+  --radius:12px;--font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;
+}
+body.theme-gray{--bg:#e8e7e3;--bg2:#f0efeb;--bg3:#dddcd8;--border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.16);--text:#2a2928;--muted:#6a6860;--cacd:#9a7030;--dir:#2e6090;--green:#2a7a52;--red:#9a3030;}
+body.theme-light{--bg:#f7f6f2;--bg2:#ffffff;--bg3:#eeede9;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.14);--text:#1a1917;--muted:#888680;--cacd:#8a6020;--dir:#1e5080;--green:#1e6a42;--red:#8a2020;}
+body.theme-gray .topbar{background:rgba(232,231,227,0.92);}
+body.theme-light .topbar{background:rgba(247,246,242,0.92);}
+body.theme-gray .mode-btn.active-cacd,body.theme-light .mode-btn.active-cacd{background:rgba(154,112,48,0.13);color:var(--cacd);}
+body.theme-gray .mode-btn.active-dir,body.theme-light .mode-btn.active-dir{background:rgba(46,96,144,0.13);color:var(--dir);}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+body.theme-gray::before,body.theme-light::before{background-image:none;}
+
+.shell{position:relative;z-index:1;display:flex;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{width:224px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:24px 0;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:14px;}
+.logo-mark{font-family:var(--font-head);font-size:20px;font-weight:800;letter-spacing:-.5px;}
+.logo-mark span{color:var(--cacd);}
+.logo-sub{font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:.5px;text-transform:uppercase;}
+.nav-section{padding:0 12px;margin-bottom:6px;}
+.nav-label{font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:0 8px;margin-bottom:5px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:14px;color:var(--muted);transition:all .15s;margin-bottom:2px;border:1px solid transparent;}
+.nav-item:hover{background:var(--bg3);color:var(--text);}
+.nav-item.active{background:var(--bg3);color:var(--text);border-color:var(--border2);}
+.nav-item .icon{font-size:15px;width:20px;text-align:center;}
+.sidebar-footer{margin-top:auto;padding:14px 16px;border-top:1px solid var(--border);}
+.theme-switcher{display:flex;gap:3px;padding:3px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;margin-bottom:10px;}
+.theme-btn{flex:1;padding:5px 3px;border-radius:5px;border:none;background:transparent;cursor:pointer;font-size:10px;font-family:var(--font-body);color:var(--muted);transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.theme-btn .swatch{width:16px;height:10px;border-radius:2px;border:1px solid var(--border2);}
+.theme-btn.active{background:var(--bg2);color:var(--text);border:1px solid var(--border2);}
+.swatch-dark{background:#0e0f14;}.swatch-gray{background:#e8e7e3;}.swatch-light{background:#ffffff;}
+.setup-btn{width:100%;padding:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:13px;cursor:pointer;transition:all .15s;}
+.setup-btn:hover{border-color:var(--cacd);color:var(--cacd);}
+
+/* TOPBAR */
+.main{flex:1;display:flex;flex-direction:column;min-width:0;}
+.topbar{padding:18px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;background:rgba(14,15,20,0.85);backdrop-filter:blur(8px);position:sticky;top:0;z-index:10;}
+.topbar-title{font-family:var(--font-head);font-size:18px;font-weight:700;}
+.topbar-sub{font-size:13px;color:var(--muted);margin-left:auto;}
+.mode-toggle{display:flex;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:3px;gap:2px;}
+.mode-btn{padding:5px 14px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;border:none;background:transparent;color:var(--muted);font-family:var(--font-body);}
+.mode-btn.active-cacd{background:rgba(200,169,110,0.18);color:var(--cacd);}
+.mode-btn.active-dir{background:rgba(110,155,200,0.18);color:var(--dir);}
+
+/* CONTENT */
+.content{flex:1;padding:28px;max-width:940px;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* CARDS E FORMS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;}
+.stat-num{font-family:var(--font-head);font-size:26px;font-weight:800;line-height:1;margin-bottom:3px;}
+.stat-label{font-size:12px;color:var(--muted);}
+.stat-cacd .stat-num{color:var(--cacd);}.stat-dir .stat-num{color:var(--dir);}.stat-green .stat-num{color:var(--green);}
+.section-title{font-family:var(--font-head);font-size:13px;font-weight:700;letter-spacing:.5px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;margin-top:24px;}
+.quick-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.qa-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.qa-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.qa-card.cacd::before{background:linear-gradient(90deg,var(--cacd),transparent);}
+.qa-card.dir::before{background:linear-gradient(90deg,var(--dir),transparent);}
+.qa-card:hover{border-color:var(--border2);transform:translateY(-1px);}
+.qa-icon{font-size:22px;margin-bottom:8px;}.qa-title{font-family:var(--font-head);font-size:14px;font-weight:700;margin-bottom:3px;}.qa-desc{font-size:12px;color:var(--muted);}
+.form-group{margin-bottom:14px;}
+.form-label{font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;display:block;}
+.form-input,.form-select,.form-textarea{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:9px 13px;color:var(--text);font-family:var(--font-body);font-size:14px;transition:border-color .15s;outline:none;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--border2);}
+.form-select option{background:var(--bg2);}
+.form-textarea{resize:vertical;min-height:80px;}
+.btn{padding:9px 18px;border-radius:8px;font-family:var(--font-body);font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all .15s;}
+.btn-primary-cacd{background:var(--cacd);color:#0e0f14;}.btn-primary-cacd:hover{opacity:.88;}
+.btn-primary-dir{background:var(--dir);color:#0e0f14;}.btn-primary-dir:hover{opacity:.88;}
+.btn-secondary{background:var(--bg3);border:1px solid var(--border2);color:var(--text);}.btn-secondary:hover{border-color:var(--muted);}
+.btn-danger{background:rgba(200,110,110,0.15);border:1px solid rgba(200,110,110,0.3);color:var(--red);}.btn-danger:hover{background:rgba(200,110,110,0.25);}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+.btn-sm{padding:5px 12px;font-size:12px;}
+
+/* RESULT BOX */
+.result-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-top:18px;display:none;animation:fadeIn .3s ease;}
+.result-box.visible{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.result-tag{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px;}
+.tag-cacd{background:rgba(200,169,110,0.15);color:var(--cacd);}
+.tag-dir{background:rgba(110,155,200,0.15);color:var(--dir);}
+.result-text{font-size:14px;line-height:1.8;white-space:pre-wrap;}
+.result-actions{margin-top:14px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:8px;}
+
+/* TABS */
+.tabs{display:flex;gap:3px;background:var(--bg3);border-radius:8px;padding:3px;margin-bottom:18px;}
+.tab{padding:6px 16px;border-radius:6px;font-size:13px;cursor:pointer;transition:all .15s;border:none;background:transparent;color:var(--muted);font-family:var(--font-body);}
+.tab.active{background:var(--bg2);color:var(--text);border:1px solid var(--border2);}
+
+/* SIMULADO */
+.question-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:18px;}
+.q-num{font-size:10px;color:var(--muted);font-weight:500;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.q-text{font-size:14px;line-height:1.7;margin-bottom:18px;}
+.options-list{display:flex;flex-direction:column;gap:7px;}
+.option-item{display:flex;align-items:flex-start;gap:11px;padding:10px 13px;border-radius:8px;border:1px solid var(--border);cursor:pointer;transition:all .15s;background:var(--bg3);}
+.option-item:hover{border-color:var(--border2);}
+.option-item.selected{border-color:var(--cacd);background:rgba(200,169,110,0.07);}
+.option-item.correct{border-color:var(--green);background:rgba(110,200,155,0.07);}
+.option-item.wrong{border-color:var(--red);background:rgba(200,110,110,0.07);}
+.option-letter{width:22px;height:22px;border-radius:50%;background:var(--bg);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;}
+.option-text{font-size:13px;line-height:1.5;}
+.gabarito-box{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:14px;margin-top:14px;font-size:13px;line-height:1.7;display:none;}
+.gabarito-box.visible{display:block;}
+
+/* PROGRESSO */
+.progress-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.prog-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;}
+.prog-card-title{font-family:var(--font-head);font-size:13px;font-weight:700;margin-bottom:14px;}
+.materia-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+.materia-name{font-size:12px;flex:1;color:var(--muted);}
+.materia-bar{flex:2;height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.materia-fill{height:100%;border-radius:2px;transition:width .5s ease;}
+.fill-cacd{background:var(--cacd);}.fill-dir{background:var(--dir);}
+.materia-pct{font-size:11px;font-weight:600;width:30px;text-align:right;}
+
+/* REDAÇÃO */
+.tema-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px;}
+.tema-titulo{font-family:var(--font-head);font-size:15px;font-weight:700;margin-bottom:6px;}
+.tema-instrucoes{font-size:13px;color:var(--muted);line-height:1.6;}
+
+/* ============================================================
+   CRUD MATÉRIAS
+   ============================================================ */
+.crud-layout{display:grid;grid-template-columns:260px 1fr;gap:16px;min-height:500px;}
+.crud-list-col{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;}
+.crud-list-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.crud-list-header h3{font-family:var(--font-head);font-size:13px;font-weight:700;}
+.crud-list-body{flex:1;overflow-y:auto;}
+.crud-item{display:flex;align-items:center;gap:8px;padding:10px 16px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .12s;font-size:13px;}
+.crud-item:hover{background:var(--bg3);}
+.crud-item.active{background:var(--bg3);border-left:3px solid var(--cacd);}
+.crud-item.active.dir-item{border-left-color:var(--dir);}
+.crud-item-name{flex:1;}
+.crud-item-badge{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500;}
+.crud-detail-col{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:14px;}
+.crud-detail-empty{display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);font-size:14px;flex-direction:column;gap:8px;}
+
+/* UNIDADES N1/N2/N3 */
+.unidade-tabs{display:flex;gap:4px;margin-bottom:12px;}
+.unidade-tab{padding:5px 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border2);background:var(--bg3);color:var(--muted);font-family:var(--font-body);transition:all .15s;}
+.unidade-tab.active-n1{background:rgba(200,169,110,0.18);color:var(--cacd);border-color:var(--cacd);}
+.unidade-tab.active-n2{background:rgba(110,155,200,0.18);color:var(--dir);border-color:var(--dir);}
+.unidade-tab.active-n3{background:rgba(110,200,155,0.18);color:var(--green);border-color:var(--green);}
+.topico-list{display:flex;flex-direction:column;gap:6px;min-height:80px;}
+.topico-item{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:7px;font-size:13px;}
+.topico-item-text{flex:1;}
+.topico-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 2px;transition:color .12s;}
+.topico-del:hover{color:var(--red);}
+.add-topico-row{display:flex;gap:8px;margin-top:8px;}
+.unidade-info{font-size:11px;color:var(--muted);padding:6px 10px;background:var(--bg3);border-radius:6px;line-height:1.5;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:100;align-items:center;justify-content:center;}
+.modal-overlay.visible{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:28px;width:440px;max-width:92vw;}
+.modal-title{font-family:var(--font-head);font-size:18px;font-weight:800;margin-bottom:4px;}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:20px;}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;}
+
+/* LOADING / TOAST */
+.loading{display:inline-flex;gap:4px;align-items:center;color:var(--muted);font-size:13px;}
+.loading-dot{width:5px;height:5px;border-radius:50%;background:var(--muted);animation:pulse 1.2s ease-in-out infinite;}
+.loading-dot:nth-child(2){animation-delay:.2s;}.loading-dot:nth-child(3){animation-delay:.4s;}
+@keyframes pulse{0%,80%,100%{transform:scale(.8);opacity:.4}40%{transform:scale(1);opacity:1}}
+.toast{position:fixed;bottom:22px;right:22px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:10px 16px;font-size:13px;z-index:200;transform:translateY(16px);opacity:0;transition:all .3s;}
+.toast.show{transform:translateY(0);opacity:1;}
+.no-key-warn{background:rgba(200,169,110,0.08);border:1px solid rgba(200,169,110,0.28);border-radius:10px;padding:16px;margin-top:20px;}
+
+/* ============================================================
+   MATERIAL DE ESTUDO (upload + geração)
+   ============================================================ */
+.upload-zone{border:2px dashed var(--border2);border-radius:var(--radius);padding:32px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg2);position:relative;}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--cacd);background:rgba(200,169,110,0.04);}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upload-icon{font-size:32px;margin-bottom:10px;}
+.upload-title{font-family:var(--font-head);font-size:15px;font-weight:700;margin-bottom:4px;}
+.upload-sub{font-size:12px;color:var(--muted);}
+.file-preview{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:12px;margin-top:12px;}
+.file-preview-icon{font-size:22px;flex-shrink:0;}
+.file-preview-info{flex:1;min-width:0;}
+.file-preview-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.file-preview-size{font-size:11px;color:var(--muted);}
+.file-preview-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;padding:0 4px;transition:color .12s;flex-shrink:0;}
+.file-preview-remove:hover{color:var(--red);}
+.gen-options{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0;}
+.gen-opt{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 12px;cursor:pointer;transition:all .15s;text-align:center;}
+.gen-opt:hover{border-color:var(--border2);}
+.gen-opt.selected{border-color:var(--cacd);background:rgba(200,169,110,0.07);}
+.gen-opt-icon{font-size:22px;margin-bottom:6px;}
+.gen-opt-label{font-size:12px;font-weight:600;font-family:var(--font-head);}
+.gen-opt-desc{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* FLASHCARDS */
+.flashcard-deck{display:flex;flex-direction:column;gap:10px;margin-top:4px;}
+.flashcard{background:var(--bg3);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:border-color .15s;}
+.flashcard:hover{border-color:var(--border2);}
+.flashcard-front{padding:14px 16px;font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.flashcard-back{padding:12px 16px;font-size:13px;line-height:1.6;color:var(--muted);border-top:1px solid var(--border);display:none;}
+.flashcard.open .flashcard-back{display:block;}
+.flashcard-toggle{font-size:11px;color:var(--muted);flex-shrink:0;transition:transform .2s;}
+.flashcard.open .flashcard-toggle{transform:rotate(180deg);}
+.fc-num{font-size:10px;font-weight:600;letter-spacing:1px;color:var(--cacd);margin-bottom:2px;}
+
+/* MATERIAIS SALVOS */
+.mat-saved-list{display:flex;flex-direction:column;gap:8px;margin-top:8px;}
+.mat-saved-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;}
+.mat-saved-meta{flex:1;min-width:0;}
+.mat-saved-title{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mat-saved-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.mat-saved-tag{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500;flex-shrink:0;}
+
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+  .quick-actions{grid-template-columns:1fr;}
+  .progress-grid{grid-template-columns:1fr;}
+  .crud-layout{grid-template-columns:1fr;}
+  .gen-options{grid-template-columns:1fr;}
+  .content{padding:16px;}
+}
+
+/* PERÍODOS */
+.periodo-selector{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+.periodo-selector-label{font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;white-space:nowrap;}
+.periodo-select-inline{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 12px;color:var(--text);font-family:var(--font-body);font-size:13px;font-weight:500;cursor:pointer;outline:none;flex:1;}
+.periodo-ativo-badge{font-size:11px;padding:3px 10px;border-radius:10px;background:rgba(110,155,200,0.15);color:var(--dir);font-weight:600;white-space:nowrap;}
+.periodo-list{display:flex;flex-direction:column;gap:6px;}
+.periodo-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:9px;cursor:pointer;transition:all .15s;}
+.periodo-item:hover{border-color:var(--border2);}
+.periodo-item.ativo{border-color:var(--dir);background:rgba(110,155,200,0.07);}
+.periodo-num{width:32px;height:32px;border-radius:8px;background:var(--bg2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:13px;font-weight:700;flex-shrink:0;}
+.periodo-item.ativo .periodo-num{background:var(--dir);color:#0e0f14;border-color:var(--dir);}
+.periodo-info{flex:1;}
+.periodo-nome{font-size:13px;font-weight:500;}
+.periodo-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+.periodo-actions{display:flex;gap:5px;flex-shrink:0;}
+.auth-screen{position:fixed;inset:0;background:var(--bg);z-index:500;display:flex;align-items:center;justify-content:center;}
+.auth-card{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:36px;width:380px;max-width:92vw;}
+.auth-logo{font-family:var(--font-head);font-size:24px;font-weight:800;margin-bottom:4px;}
+.auth-logo span{color:var(--cacd);}
+.auth-sub{font-size:13px;color:var(--muted);margin-bottom:24px;}
+.auth-tabs{display:flex;gap:3px;background:var(--bg3);border-radius:8px;padding:3px;margin-bottom:20px;}
+.auth-tab{flex:1;padding:7px;border-radius:6px;border:none;background:transparent;cursor:pointer;font-size:13px;font-family:var(--font-body);color:var(--muted);transition:all .15s;}
+.auth-tab.active{background:var(--bg);color:var(--text);border:1px solid var(--border2);}
+.auth-error{background:rgba(200,110,110,0.12);border:1px solid rgba(200,110,110,0.3);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red);margin-bottom:14px;display:none;}
+.auth-success{background:rgba(110,200,155,0.12);border:1px solid rgba(110,200,155,0.3);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--green);margin-bottom:14px;display:none;}
+.sync-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 9px;border-radius:10px;font-weight:500;}
+.sync-online{background:rgba(110,200,155,0.15);color:var(--green);}
+.sync-offline{background:rgba(122,120,112,0.15);color:var(--muted);}
+.sync-dot{width:6px;height:6px;border-radius:50%;}
+.sync-online .sync-dot{background:var(--green);}
+.sync-offline .sync-dot{background:var(--muted);}
+.user-menu{padding:10px 16px;border-bottom:1px solid var(--border);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.user-avatar{width:28px;height:28px;border-radius:50%;background:var(--cacd);color:#0e0f14;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.user-email{font-size:11px;color:var(--muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.logout-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;font-family:var(--font-body);transition:color .12s;flex-shrink:0;}
+.logout-btn:hover{color:var(--red);}
+</style>
+</head>
+<body>
+
+<!-- TELA DE AUTH -->
+<div class="auth-screen" id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">Estuda<span>.AI</span></div>
+    <div class="auth-sub">CACD & Direito — faça login para sincronizar seus dados</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="atab-login" onclick="switchAuthTab('login')">Entrar</button>
+      <button class="auth-tab" id="atab-signup" onclick="switchAuthTab('signup')">Criar conta</button>
+    </div>
+    <div class="auth-error" id="auth-error"></div>
+    <div class="auth-success" id="auth-success"></div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" id="auth-email" placeholder="seu@email.com" onkeydown="if(event.key==='Enter')submitAuth()"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Senha</label>
+      <input class="form-input" type="password" id="auth-password" placeholder="mínimo 6 caracteres" onkeydown="if(event.key==='Enter')submitAuth()"/>
+    </div>
+    <button class="btn btn-primary-cacd" style="width:100%;margin-top:4px" onclick="submitAuth()" id="btn-auth">Entrar</button>
+    <div style="margin-top:14px;text-align:center">
+      <button style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;font-family:var(--font-body)" onclick="usarOffline()">Usar sem login (modo offline)</button>
+    </div>
+  </div>
+</div>
+
+<div class="shell">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <!-- User menu (visível após login) -->
+  <div class="user-menu" id="user-menu" style="display:none">
+    <div class="user-avatar" id="user-avatar">?</div>
+    <div class="user-email" id="user-email-display">—</div>
+    <button class="logout-btn" onclick="logout()" title="Sair">↩</button>
+  </div>
+  <div class="logo" id="logo-block">
+    <div class="logo-mark">Estuda<span>.AI</span></div>
+    <div class="logo-sub">CACD & Direito</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Geral</div>
+    <div class="nav-item active" onclick="goTo('dashboard',this)"><span class="icon">⊞</span>Dashboard</div>
+    <div class="nav-item" onclick="goTo('progresso',this)"><span class="icon">◎</span>Progresso</div>
+  </div>
+  <div class="nav-section" style="margin-top:10px">
+    <div class="nav-label">Ferramentas</div>
+    <div class="nav-item" onclick="goTo('historinha',this)"><span class="icon">✦</span>Historinhas</div>
+    <div class="nav-item" onclick="goTo('simulado',this)"><span class="icon">◈</span>Simulados</div>
+    <div class="nav-item" onclick="goTo('redacao',this)"><span class="icon">✎</span>Redação CACD</div>
+    <div class="nav-item" onclick="goTo('material',this)"><span class="icon">⊕</span>Material de Estudo</div>
+  </div>
+  <div class="nav-section" style="margin-top:10px">
+    <div class="nav-label">Configuração</div>
+    <div class="nav-item" onclick="goTo('materias',this)"><span class="icon">☰</span>Matérias & Períodos</div>
+  </div>
+  <!-- Período ativo (Direito) -->
+  <div id="sidebar-periodo" style="padding:0 12px;margin-top:4px;display:none">
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:0 8px;margin-bottom:5px">Período ativo</div>
+    <select class="periodo-select-inline" id="sidebar-periodo-sel" onchange="ativarPeriodoPorSelect(this.value)" style="width:100%;margin-bottom:4px">
+      <option value="">— sem período —</option>
+    </select>
+  </div>
+  <div class="sidebar-footer">
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:7px">Aparência</div>
+    <div class="theme-switcher">
+      <button class="theme-btn active" id="tbtn-dark" onclick="setTheme('dark')"><div class="swatch swatch-dark"></div>Escuro</button>
+      <button class="theme-btn" id="tbtn-gray" onclick="setTheme('gray')"><div class="swatch swatch-gray"></div>Cinza</button>
+      <button class="theme-btn" id="tbtn-light" onclick="setTheme('light')"><div class="swatch swatch-light"></div>Claro</button>
+    </div>
+    <button class="setup-btn" onclick="openSetup()">⚙ Configurar API</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Dashboard</div>
+    <div class="mode-toggle">
+      <button class="mode-btn active-cacd" id="btn-cacd" onclick="setModo('cacd')">CACD</button>
+      <button class="mode-btn" id="btn-dir" onclick="setModo('dir')">Direito</button>
+    </div>
+    <div id="sync-status"></div>
+    <div class="topbar-sub" id="topbar-sub">Modo: <strong style="color:var(--cacd)">CACD 2027</strong></div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="panel active" id="panel-dashboard">
+      <div class="stats-row">
+        <div class="stat-card stat-cacd"><div class="stat-num" id="stat-historinhas">0</div><div class="stat-label">Historinhas</div></div>
+        <div class="stat-card stat-dir"><div class="stat-num" id="stat-questoes">0</div><div class="stat-label">Questões respondidas</div></div>
+        <div class="stat-card stat-green"><div class="stat-num" id="stat-acertos">—</div><div class="stat-label">Taxa de acerto</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-redacoes">0</div><div class="stat-label">Redações</div></div>
+      </div>
+      <div class="section-title">Acesso rápido</div>
+      <div class="quick-actions">
+        <div class="qa-card cacd" onclick="goToNamed('historinha','cacd')"><div class="qa-icon">✦</div><div class="qa-title">Historinha CACD</div><div class="qa-desc">Narrativas para memorizar conteúdo diplomático</div></div>
+        <div class="qa-card dir" onclick="goToNamed('historinha','dir')"><div class="qa-icon">⚖</div><div class="qa-title">Historinha Direito</div><div class="qa-desc">Penal, Civil, MARC e suas matérias cadastradas</div></div>
+        <div class="qa-card cacd" onclick="goToNamed('simulado','cacd')"><div class="qa-icon">◈</div><div class="qa-title">Simulado CACD</div><div class="qa-desc">Questões no padrão CACD com gabarito comentado</div></div>
+        <div class="qa-card dir" onclick="goTo('materias',null)"><div class="qa-icon">☰</div><div class="qa-title">Gerenciar Matérias</div><div class="qa-desc">Adicionar matérias, tópicos por N1/N2/N3</div></div>
+      </div>
+      <div id="no-key-warning" class="no-key-warn" style="display:none">
+        <div style="font-weight:500;color:var(--cacd);margin-bottom:4px">⚠ Configure sua chave de API</div>
+        <div style="font-size:13px;color:var(--muted)">Sem a chave Anthropic as funções de IA não funcionam. Clique em <strong style="color:var(--text)">Configurar API</strong> no rodapé do menu.</div>
+      </div>
+    </div>
+
+    <!-- MATÉRIAS & PERÍODOS (CRUD) -->
+    <div class="panel" id="panel-materias">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div class="tabs" style="margin-bottom:0">
+          <button class="tab active" id="tab-mat-cacd"    onclick="switchMatTab('cacd')">CACD</button>
+          <button class="tab"        id="tab-mat-dir"     onclick="switchMatTab('dir')">Direito</button>
+          <button class="tab"        id="tab-mat-periodos" onclick="switchMatTab('periodos')">Períodos</button>
+        </div>
+        <button class="btn btn-primary-cacd btn-sm" id="btn-nova-materia" onclick="abrirModalMateria()">+ Nova matéria</button>
+      </div>
+
+      <!-- PAINEL PERÍODOS -->
+      <div id="mat-periodos-panel" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div style="font-size:13px;color:var(--muted)">Gerencie os períodos do curso de Direito. O período <strong style="color:var(--text)">ativo</strong> filtra as matérias em todo o app.</div>
+          <button class="btn btn-primary-dir btn-sm" onclick="abrirModalPeriodo()">+ Novo período</button>
+        </div>
+        <div class="periodo-list" id="periodo-list">
+          <div style="font-size:13px;color:var(--muted);padding:16px 0">Nenhum período cadastrado.</div>
+        </div>
+      </div>
+
+      <!-- PAINEL MATÉRIAS (CACD / Direito) -->
+      <div id="mat-crud-panel">
+        <!-- Banner período ativo (só Direito) -->
+        <div id="periodo-banner" style="display:none;margin-bottom:14px" class="periodo-selector">
+          <span class="periodo-selector-label">Filtrando por</span>
+          <span class="periodo-ativo-badge" id="periodo-banner-nome">—</span>
+          <span style="font-size:11px;color:var(--muted);margin-left:auto">Altere em "Períodos"</span>
+        </div>
+
+        <div class="crud-layout">
+          <div class="crud-list-col">
+            <div class="crud-list-header">
+              <h3 id="crud-list-title">Matérias CACD</h3>
+              <span id="crud-count" style="font-size:11px;color:var(--muted)">0</span>
+            </div>
+            <div class="crud-list-body" id="crud-list-body"></div>
+          </div>
+
+          <div class="crud-detail-col" id="crud-detail">
+            <div class="crud-detail-empty" id="crud-detail-empty">
+              <span style="font-size:28px">☰</span>
+              <span>Selecione uma matéria</span>
+            </div>
+            <div id="crud-detail-content" style="display:none">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+                <div>
+                  <div style="font-family:var(--font-head);font-size:17px;font-weight:700" id="det-nome"></div>
+                  <div style="font-size:12px;color:var(--muted);margin-top:2px" id="det-frente"></div>
+                </div>
+                <div style="display:flex;gap:6px;flex-shrink:0">
+                  <button class="btn btn-secondary btn-sm" onclick="editarMateria()">Editar</button>
+                  <button class="btn btn-danger btn-sm" onclick="excluirMateria()">Excluir</button>
+                </div>
+              </div>
+              <div>
+                <div style="font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Tópicos por unidade</div>
+                <div class="unidade-tabs">
+                  <button class="unidade-tab active-n1" id="utab-n1" onclick="switchUnidade('n1')">N1</button>
+                  <button class="unidade-tab" id="utab-n2" onclick="switchUnidade('n2')">N2</button>
+                  <button class="unidade-tab" id="utab-n3" onclick="switchUnidade('n3')">N3</button>
+                </div>
+                <div class="unidade-info" id="unidade-info"></div>
+                <div class="topico-list" id="topico-list" style="margin-top:10px"></div>
+                <div class="add-topico-row">
+                  <input class="form-input" id="novo-topico-input" placeholder="Adicionar tópico..." style="font-size:13px;padding:7px 11px" onkeydown="if(event.key==='Enter')adicionarTopico()"/>
+                  <button class="btn btn-secondary btn-sm" onclick="adicionarTopico()">+ Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISTORINHA -->
+    <div class="panel" id="panel-historinha">
+      <div class="tabs">
+        <button class="tab active" id="tab-hist-cacd" onclick="switchHistTab('cacd')">CACD</button>
+        <button class="tab" id="tab-hist-dir" onclick="switchHistTab('dir')">Direito</button>
+      </div>
+      <div id="hist-cacd">
+        <div class="form-group">
+          <label class="form-label">Matéria</label>
+          <select class="form-select" id="cacd-materia"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Unidade</label>
+          <select class="form-select" id="cacd-unidade">
+            <option value="N1">N1</option>
+            <option value="N2">N2</option>
+            <option value="N3">N3</option>
+            <option value="todas">Todas as unidades</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tópico específico <span style="font-weight:400;text-transform:none;font-size:11px">(ou deixe vazio para usar os tópicos da unidade)</span></label>
+          <input class="form-input" id="cacd-topico" placeholder="Ex: Imunidade de jurisdição, GATT/OMC..."/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Profundidade</label>
+          <select class="form-select" id="cacd-nivel">
+            <option value="intro">Introdutório</option>
+            <option value="medio" selected>Médio</option>
+            <option value="avancado">Avançado (padrão CACD)</option>
+          </select>
+        </div>
+        <button class="btn btn-primary-cacd" onclick="gerarHistorinha('cacd')" id="btn-hist-cacd">✦ Gerar historinha</button>
+      </div>
+      <div id="hist-dir" style="display:none">
+        <div class="form-group">
+          <label class="form-label">Matéria</label>
+          <select class="form-select" id="dir-materia"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Unidade</label>
+          <select class="form-select" id="dir-unidade">
+            <option value="N1">N1 — conteúdo próprio da N1</option>
+            <option value="N2">N2 — conteúdo N2 + revisão N1</option>
+            <option value="N3">N3 — conteúdo N3 + todo o semestre</option>
+            <option value="todas">Todas as unidades</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tópico específico <span style="font-weight:400;text-transform:none;font-size:11px">(ou deixe vazio)</span></label>
+          <input class="form-input" id="dir-topico" placeholder="Ex: Estelionato, Mediação familiar..."/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Foco</label>
+          <select class="form-select" id="dir-foco">
+            <option value="conceito">Conceito e doutrina</option>
+            <option value="jurisprudencia">Jurisprudência STJ/STF</option>
+            <option value="caso">Caso prático</option>
+            <option value="prova">Revisão para prova</option>
+          </select>
+        </div>
+        <button class="btn btn-primary-dir" onclick="gerarHistorinha('dir')" id="btn-hist-dir">⚖ Gerar historinha</button>
+      </div>
+      <div class="result-box" id="result-historinha">
+        <div class="result-header">
+          <span class="result-tag" id="hist-tag">CACD</span>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-secondary btn-sm" onclick="salvarHistorinha()">💾 Salvar</button>
+            <button class="btn btn-secondary btn-sm" onclick="copiarTexto('result-hist-text')">📋 Copiar</button>
+          </div>
+        </div>
+        <div class="result-text" id="result-hist-text"></div>
+      </div>
+    </div>
+
+    <!-- SIMULADO -->
+    <div class="panel" id="panel-simulado">
+      <div class="tabs">
+        <button class="tab active" id="tab-sim-cacd" onclick="switchSimTab('cacd')">CACD</button>
+        <button class="tab" id="tab-sim-dir" onclick="switchSimTab('dir')">Direito</button>
+      </div>
+      <div id="sim-config">
+        <div class="form-group">
+          <label class="form-label">Matéria</label>
+          <select class="form-select" id="sim-materia"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Unidade</label>
+          <select class="form-select" id="sim-unidade">
+            <option value="N1">N1</option>
+            <option value="N2">N2 (inclui N1)</option>
+            <option value="N3">N3 (inclui tudo)</option>
+            <option value="todas">Todas</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tópico específico</label>
+          <input class="form-input" id="sim-topico" placeholder="Vazio = aleatório dentro da unidade..."/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Quantidade</label>
+          <select class="form-select" id="sim-qtd">
+            <option value="1">1 questão</option>
+            <option value="3" selected>3 questões</option>
+            <option value="5">5 questões</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Armadilha CACD</label>
+          <select class="form-select" id="sim-armadilha">
+            <option value="nenhuma">Nenhuma</option>
+            <option value="cauda">Cauda venenosa</option>
+            <option value="absolutismo">Absolutismo (sempre/nunca)</option>
+            <option value="causa">Inversão causa-efeito</option>
+          </select>
+        </div>
+        <button class="btn btn-primary-cacd" onclick="gerarSimulado()" id="btn-simulado">◈ Gerar simulado</button>
+      </div>
+      <div id="sim-questoes" style="margin-top:22px;display:none"></div>
+      <div style="display:none;margin-top:10px" id="sim-acao">
+        <button class="btn btn-primary-cacd" onclick="verificarSimulado()">Verificar respostas</button>
+        <button class="btn btn-secondary" style="margin-left:8px" onclick="novoSimulado()">Novo simulado</button>
+      </div>
+    </div>
+
+    <!-- REDAÇÃO -->
+    <div class="panel" id="panel-redacao">
+      <div class="form-group">
+        <label class="form-label">Área temática</label>
+        <select class="form-select" id="red-area">
+          <option>Política Internacional</option><option>Economia Internacional</option>
+          <option>Direitos Humanos</option><option>Meio Ambiente e Clima</option>
+          <option>Segurança Internacional</option><option>Brasil e América do Sul</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tema específico (opcional)</label>
+        <input class="form-input" id="red-tema" placeholder="Deixe vazio para o Claude sugerir..."/>
+      </div>
+      <button class="btn btn-primary-cacd" onclick="gerarTemaRedacao()" id="btn-red-tema">Gerar tema e instruções</button>
+      <div class="tema-box" id="tema-box" style="display:none;margin-top:18px">
+        <div class="result-tag tag-cacd" style="display:inline-block;margin-bottom:8px">TEMA CACD</div>
+        <div class="tema-titulo" id="tema-titulo"></div>
+        <div class="tema-instrucoes" id="tema-instrucoes"></div>
+      </div>
+      <div id="red-form" style="display:none;margin-top:14px">
+        <div class="form-group">
+          <label class="form-label">Sua redação <span style="font-weight:400;text-transform:none">(mín. 500 palavras para o CACD)</span></label>
+          <textarea class="form-textarea" id="red-texto" style="min-height:260px" placeholder="Escreva aqui..."></textarea>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn btn-primary-cacd" onclick="corrigirRedacao()" id="btn-corrigir">✎ Corrigir redação</button>
+          <span style="font-size:12px;color:var(--muted)" id="word-count">0 palavras</span>
+        </div>
+      </div>
+      <div class="result-box" id="result-redacao">
+        <div class="result-header">
+          <span class="result-tag tag-cacd">CORREÇÃO CACD</span>
+          <button class="btn btn-secondary btn-sm" onclick="copiarTexto('result-red-text')">📋 Copiar</button>
+        </div>
+        <div class="result-text" id="result-red-text"></div>
+      </div>
+    </div>
+
+    <!-- MATERIAL DE ESTUDO -->
+    <div class="panel" id="panel-material">
+
+      <!-- Abas: Upload / Salvos -->
+      <div class="tabs" style="margin-bottom:20px">
+        <button class="tab active" id="tab-mat-upload" onclick="switchMatPanel('upload')">⊕ Novo material</button>
+        <button class="tab" id="tab-mat-salvos" onclick="switchMatPanel('salvos')">📚 Materiais salvos</button>
+      </div>
+
+      <!-- UPLOAD / ENTRADA -->
+      <div id="mat-upload-panel">
+        <!-- Vincular a matéria/unidade -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Frente</label>
+            <select class="form-select" id="mat-frente-sel" onchange="atualizarSelectMatMaterial()">
+              <option value="cacd">CACD</option>
+              <option value="dir">Direito</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Matéria</label>
+            <select class="form-select" id="mat-materia-sel"></select>
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Unidade</label>
+            <select class="form-select" id="mat-unidade-sel">
+              <option value="N1">N1</option>
+              <option value="N2">N2</option>
+              <option value="N3">N3</option>
+              <option value="todas">Todas</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Tabs PDF / Texto -->
+        <div class="tabs" style="margin-bottom:14px">
+          <button class="tab active" id="tab-inp-pdf" onclick="switchInputTipo('pdf')">📄 PDF</button>
+          <button class="tab" id="tab-inp-texto" onclick="switchInputTipo('texto')">✏ Texto</button>
+        </div>
+
+        <!-- PDF upload -->
+        <div id="inp-pdf">
+          <div class="upload-zone" id="upload-zone" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleDrop(event)">
+            <input type="file" accept=".pdf,application/pdf" onchange="handleFileInput(this)"/>
+            <div class="upload-icon">📄</div>
+            <div class="upload-title">Arraste um PDF ou clique para selecionar</div>
+            <div class="upload-sub">Máx. 4 MB — o texto será extraído automaticamente</div>
+          </div>
+          <div class="file-preview" id="file-preview" style="display:none">
+            <span class="file-preview-icon">📄</span>
+            <div class="file-preview-info">
+              <div class="file-preview-name" id="file-name">—</div>
+              <div class="file-preview-size" id="file-size">—</div>
+            </div>
+            <button class="file-preview-remove" onclick="limparArquivo()">×</button>
+          </div>
+        </div>
+
+        <!-- Texto colado -->
+        <div id="inp-texto" style="display:none">
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Cole o conteúdo aqui</label>
+            <textarea class="form-textarea" id="mat-texto-input" style="min-height:180px" placeholder="Cole anotações, transcrições, trechos de livro ou qualquer texto..."></textarea>
+          </div>
+        </div>
+
+        <!-- O que gerar -->
+        <div style="margin-top:18px">
+          <div class="form-label" style="display:block;margin-bottom:10px">O que gerar a partir do material?</div>
+          <div class="gen-options">
+            <div class="gen-opt selected" id="gopt-historinha" onclick="selecionarGenOpt('historinha')">
+              <div class="gen-opt-icon">✦</div>
+              <div class="gen-opt-label">Historinha</div>
+              <div class="gen-opt-desc">Resumo narrativo para memorizar</div>
+            </div>
+            <div class="gen-opt" id="gopt-flashcards" onclick="selecionarGenOpt('flashcards')">
+              <div class="gen-opt-icon">🃏</div>
+              <div class="gen-opt-label">Flashcards</div>
+              <div class="gen-opt-desc">Perguntas e respostas curtas</div>
+            </div>
+            <div class="gen-opt" id="gopt-questoes" onclick="selecionarGenOpt('questoes')">
+              <div class="gen-opt-icon">◈</div>
+              <div class="gen-opt-label">Questões</div>
+              <div class="gen-opt-desc">Múltipla escolha com gabarito</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Qtd flashcards/questões -->
+        <div id="mat-qtd-row" style="display:none;margin-bottom:14px">
+          <label class="form-label">Quantidade</label>
+          <select class="form-select" id="mat-qtd" style="width:160px">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="15">15</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary-cacd" id="btn-gerar-material" onclick="gerarDoMaterial()" style="margin-top:4px">
+          ⊕ Gerar a partir do material
+        </button>
+      </div>
+
+      <!-- RESULTADOS -->
+      <div class="result-box" id="result-material" style="margin-top:20px">
+        <div class="result-header">
+          <span class="result-tag tag-cacd" id="mat-result-tag">MATERIAL</span>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-secondary btn-sm" onclick="salvarMaterialGerado()">💾 Salvar</button>
+            <button class="btn btn-secondary btn-sm" onclick="copiarTexto('mat-result-body')">📋 Copiar</button>
+          </div>
+        </div>
+        <div id="mat-result-body"></div>
+      </div>
+
+      <!-- SALVOS -->
+      <div id="mat-salvos-panel" style="display:none">
+        <div id="mat-salvos-lista"></div>
+        <div id="mat-salvos-vazio" style="color:var(--muted);font-size:13px;padding:20px 0;display:none">Nenhum material salvo ainda.</div>
+      </div>
+
+    </div>
+
+    <!-- PROGRESSO -->
+    <div class="panel" id="panel-progresso">
+      <div class="progress-grid">
+        <div class="prog-card">
+          <div class="prog-card-title" style="color:var(--cacd)">📋 CACD</div>
+          <div id="prog-cacd-list"></div>
+        </div>
+        <div class="prog-card">
+          <div class="prog-card-title" style="color:var(--dir)">⚖ Direito</div>
+          <div id="prog-dir-list"></div>
+        </div>
+      </div>
+      <div class="section-title">Histórico recente</div>
+      <div id="historico-list" style="display:flex;flex-direction:column;gap:7px"></div>
+      <div id="historico-vazio" style="color:var(--muted);font-size:13px;display:none">Nenhuma atividade ainda.</div>
+    </div>
+
+  </div><!-- /content -->
+</main>
+</div>
+
+<!-- MODAL NOVA/EDITAR MATÉRIA -->
+<div class="modal-overlay" id="modal-materia">
+  <div class="modal">
+    <div class="modal-title" id="modal-mat-title">Nova matéria</div>
+    <div class="modal-sub">Você poderá adicionar tópicos por unidade depois.</div>
+    <div class="form-group">
+      <label class="form-label">Nome da matéria</label>
+      <input class="form-input" id="mat-nome-input" placeholder="Ex: Direito Penal — Crimes em Espécie"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Frente</label>
+      <select class="form-select" id="mat-frente-input" onchange="togglePeriodoFieldModal()">
+        <option value="cacd">CACD</option>
+        <option value="dir">Direito</option>
+      </select>
+    </div>
+    <div class="form-group" id="mat-periodo-group" style="display:none">
+      <label class="form-label">Período <span style="font-weight:400;text-transform:none">(opcional)</span></label>
+      <select class="form-select" id="mat-periodo-input">
+        <option value="">— sem período —</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="fecharModalMateria()">Cancelar</button>
+      <button class="btn btn-primary-cacd" onclick="salvarMateria()" id="btn-salvar-mat">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PERÍODO -->
+<div class="modal-overlay" id="modal-periodo">
+  <div class="modal">
+    <div class="modal-title" id="modal-periodo-title">Novo período</div>
+    <div class="modal-sub">Ex: 4º Período — 2025.1</div>
+    <div class="form-group">
+      <label class="form-label">Número do período</label>
+      <select class="form-select" id="periodo-num-input">
+        <option value="1">1º Período</option>
+        <option value="2">2º Período</option>
+        <option value="3">3º Período</option>
+        <option value="4" selected>4º Período</option>
+        <option value="5">5º Período</option>
+        <option value="6">6º Período</option>
+        <option value="7">7º Período</option>
+        <option value="8">8º Período</option>
+        <option value="9">9º Período</option>
+        <option value="10">10º Período</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Descrição <span style="font-weight:400;text-transform:none">(opcional)</span></label>
+      <input class="form-input" id="periodo-desc-input" placeholder="Ex: 2025.1, Semestre atual..."/>
+    </div>
+    <div class="form-group" style="display:flex;align-items:center;gap:10px">
+      <input type="checkbox" id="periodo-ativo-check" style="width:16px;height:16px;cursor:pointer"/>
+      <label for="periodo-ativo-check" style="font-size:13px;cursor:pointer">Definir como período ativo</label>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="fecharModalPeriodo()">Cancelar</button>
+      <button class="btn btn-primary-dir" onclick="salvarPeriodo()" id="btn-salvar-periodo">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL API -->
+<div class="modal-overlay" id="modal-setup">
+  <div class="modal">
+    <div class="modal-title">Configurar API</div>
+    <div class="modal-sub">Chave Anthropic salva localmente. Credenciais Supabase necessárias para sincronização.</div>
+    <div class="form-group">
+      <label class="form-label">Supabase URL</label>
+      <input class="form-input" id="sb-url-input" placeholder="https://xxxxxxxxxxx.supabase.co"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Supabase Anon Key</label>
+      <input class="form-input" id="sb-key-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Chave Anthropic (Claude Haiku)</label>
+      <input class="form-input" type="password" id="api-key-input" placeholder="sk-ant-..."/>
+    </div>
+    <div style="font-size:12px;color:var(--muted);margin-top:-6px">
+      Anthropic: <a href="https://console.anthropic.com" target="_blank" style="color:var(--cacd)">console.anthropic.com</a> →
+      Supabase: <a href="https://supabase.com/dashboard" target="_blank" style="color:var(--cacd)">Project Settings → API</a>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeSetup()">Cancelar</button>
+      <button class="btn btn-primary-cacd" onclick="salvarApiKey()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// DADOS PADRÃO
+// ============================================================
+const MATERIAS_DEFAULT = [
+  {id:'m1',nome:'Direito Internacional Público',frente:'cacd',topicos:{n1:['Fontes do DI','Sujeitos de DI','Tratados internacionais'],n2:['Responsabilidade internacional','Solução pacífica de controvérsias'],n3:['Direito do mar','Direito humanitário','Organismos internacionais']}},
+  {id:'m2',nome:'Direito Internacional Privado',frente:'cacd',topicos:{n1:['LINDB','Conflito de leis no espaço'],n2:['Homologação de sentença estrangeira'],n3:['Cooperação jurídica internacional']}},
+  {id:'m3',nome:'Economia',frente:'cacd',topicos:{n1:['Microeconomia básica','Oferta e demanda'],n2:['Macroeconomia','Política fiscal e monetária'],n3:['Comércio internacional','OMC','Finanças internacionais']}},
+  {id:'m4',nome:'História do Brasil',frente:'cacd',topicos:{n1:['Período colonial','Independência'],n2:['Império','República Velha'],n3:['Era Vargas ao presente','Política externa brasileira']}},
+  {id:'m5',nome:'Política Internacional',frente:'cacd',topicos:{n1:['Realismo e liberalismo','Conceitos de poder'],n2:['Ordem mundial pós-1945','Guerra Fria'],n3:['Ordem atual','Temas globais']}},
+  {id:'m6',nome:'Direito Penal — Crimes em Espécie',frente:'dir',topicos:{n1:['Crimes contra a pessoa','Homicídio','Lesão corporal'],n2:['Crimes contra o patrimônio','Furto','Roubo','Estelionato'],n3:['Crimes contra a administração','Crimes digitais','Lei Maria da Penha']}},
+  {id:'m7',nome:'Direito Civil — Contratos em Espécie',frente:'dir',topicos:{n1:['Compra e venda','Doação'],n2:['Locação','Prestação de serviço','Empreitada'],n3:['Seguro','Mandato','Fiança','Responsabilidade civil']}},
+  {id:'m8',nome:'MARC — Mediação e Arbitragem',frente:'dir',topicos:{n1:['Conceito e princípios da mediação','Lei de Mediação'],n2:['Arbitragem — Lei 9.307/96','Procedimento arbitral'],n3:['Negociação','Conciliação','MARC nos contratos']}},
+];
+
+// ============================================================
+// ESTADO
+// ============================================================
+let modo = 'cacd';
+let matTabAtual = 'cacd';
+let simTabAtual = 'cacd';
+let unidadeAtual = 'n1';
+let materiaSelecionadaId = null;
+let editandoId = null;
+let apiKey = localStorage.getItem('estuda_api_key') || '';
+let stats = JSON.parse(localStorage.getItem('estuda_stats') || '{"historinhas":0,"questoes":0,"acertos":0,"tentativas":0,"redacoes":0}');
+let historico = JSON.parse(localStorage.getItem('estuda_historico') || '[]');
+let materias = JSON.parse(localStorage.getItem('estuda_materias') || 'null') || MATERIAS_DEFAULT;
+let simQuestoes = [], simRespostas = {}, simGabarito = {};
+
+function salvarMaterias() { localStorage.setItem('estuda_materias', JSON.stringify(materias)); }
+function getMaterias(frente) {
+  let lista = materias.filter(m => m.frente === frente);
+  // Filtrar por período ativo se for Direito
+  if (frente === 'dir' && periodoAtivo) {
+    const comPeriodo = lista.filter(m => m.periodoId === periodoAtivo);
+    // Se existem matérias vinculadas ao período, mostrar só elas
+    if (comPeriodo.length) return comPeriodo;
+  }
+  return lista;
+}
+function getTodasMaterias(frente) { return materias.filter(m => m.frente === frente); }
+function getMateria(id) { return materias.find(m => m.id === id); }
+function uid() { return 'm' + Date.now() + Math.random().toString(36).slice(2,6); }
+
+// ============================================================
+// PERÍODOS
+// ============================================================
+let periodos = JSON.parse(localStorage.getItem('estuda_periodos') || '[]');
+let periodoAtivo = localStorage.getItem('estuda_periodo_ativo') || null;
+let editandoPeriodoId = null;
+
+function salvarPeriodosLocal() {
+  localStorage.setItem('estuda_periodos', JSON.stringify(periodos));
+  localStorage.setItem('estuda_periodo_ativo', periodoAtivo || '');
+}
+
+function getPeriodo(id) { return periodos.find(p => p.id === id); }
+function getPeriodoAtivo() { return periodos.find(p => p.id === periodoAtivo); }
+
+function ativarPeriodo(id) {
+  periodoAtivo = id || null;
+  periodos.forEach(p => p.ativo = p.id === id);
+  salvarPeriodosLocal();
+  renderSidebarPeriodo();
+  preencherSelectMaterias();
+  atualizarSelectMatMaterial();
+  renderCrudLista();
+  renderPeriodoBanner();
+  syncToSupabase();
+}
+
+function ativarPeriodoPorSelect(val) {
+  ativarPeriodo(val || null);
+}
+
+function renderSidebarPeriodo() {
+  const bloco = document.getElementById('sidebar-periodo');
+  const sel = document.getElementById('sidebar-periodo-sel');
+  if (!bloco || !sel) return;
+  if (!periodos.length) { bloco.style.display = 'none'; return; }
+  bloco.style.display = 'block';
+  sel.innerHTML = '<option value="">— todos os períodos —</option>' +
+    periodos.map(p => `<option value="${p.id}" ${p.id === periodoAtivo ? 'selected' : ''}>${p.numero}º Período${p.descricao ? ' — ' + p.descricao : ''}</option>`).join('');
+}
+
+function renderPeriodoBanner() {
+  const banner = document.getElementById('periodo-banner');
+  const nome = document.getElementById('periodo-banner-nome');
+  if (!banner || !nome) return;
+  const p = getPeriodoAtivo();
+  if (matTabAtual === 'dir' && p) {
+    banner.style.display = 'flex';
+    nome.textContent = p.numero + 'º Período' + (p.descricao ? ' — ' + p.descricao : '');
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+function renderPeriodoList() {
+  const el = document.getElementById('periodo-list');
+  if (!el) return;
+  if (!periodos.length) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:16px 0">Nenhum período cadastrado. Clique em "+ Novo período".</div>';
+    return;
+  }
+  el.innerHTML = periodos.map(p => {
+    const qtdMat = materias.filter(m => m.frente === 'dir' && m.periodoId === p.id).length;
+    return `<div class="periodo-item${p.id === periodoAtivo ? ' ativo' : ''}" onclick="ativarPeriodo('${p.id}')">
+      <div class="periodo-num">${p.numero}</div>
+      <div class="periodo-info">
+        <div class="periodo-nome">${p.numero}º Período${p.descricao ? ' — ' + p.descricao : ''}</div>
+        <div class="periodo-sub">${qtdMat} matéria${qtdMat !== 1 ? 's' : ''} vinculada${qtdMat !== 1 ? 's' : ''}${p.id === periodoAtivo ? ' · <strong style=color:var(--dir)>ativo</strong>' : ''}</div>
+      </div>
+      <div class="periodo-actions" onclick="event.stopPropagation()">
+        <button class="btn btn-secondary btn-sm" onclick="abrirModalPeriodo('${p.id}')">Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="excluirPeriodo('${p.id}')">×</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function abrirModalPeriodo(id) {
+  editandoPeriodoId = id || null;
+  const p = id ? getPeriodo(id) : null;
+  document.getElementById('modal-periodo-title').textContent = id ? 'Editar período' : 'Novo período';
+  document.getElementById('periodo-num-input').value = p ? p.numero : 4;
+  document.getElementById('periodo-desc-input').value = p ? (p.descricao || '') : '';
+  document.getElementById('periodo-ativo-check').checked = p ? p.id === periodoAtivo : false;
+  document.getElementById('modal-periodo').classList.add('visible');
+}
+
+function fecharModalPeriodo() {
+  document.getElementById('modal-periodo').classList.remove('visible');
+}
+
+function salvarPeriodo() {
+  const num = parseInt(document.getElementById('periodo-num-input').value);
+  const desc = document.getElementById('periodo-desc-input').value.trim();
+  const setAtivo = document.getElementById('periodo-ativo-check').checked;
+  if (editandoPeriodoId) {
+    const p = getPeriodo(editandoPeriodoId);
+    p.numero = num; p.descricao = desc;
+  } else {
+    periodos.push({ id: uid(), numero: num, descricao: desc, ativo: false });
+  }
+  if (setAtivo) {
+    periodoAtivo = editandoPeriodoId || periodos[periodos.length - 1].id;
+    periodos.forEach(p => p.ativo = p.id === periodoAtivo);
+  }
+  salvarPeriodosLocal();
+  preencherPeriodoSelects();
+  renderPeriodoList();
+  renderSidebarPeriodo();
+  renderPeriodoBanner();
+  fecharModalPeriodo();
+  syncToSupabase();
+  toast(editandoPeriodoId ? '✓ Período atualizado' : '✓ Período adicionado');
+  editandoPeriodoId = null;
+}
+
+function excluirPeriodo(id) {
+  const p = getPeriodo(id);
+  if (!confirm(`Excluir "${p.numero}º Período"? As matérias vinculadas não serão excluídas.`)) return;
+  periodos = periodos.filter(x => x.id !== id);
+  if (periodoAtivo === id) periodoAtivo = null;
+  // Desvincular matérias deste período
+  materias.forEach(m => { if (m.periodoId === id) m.periodoId = null; });
+  salvarPeriodosLocal();
+  salvarMaterias();
+  preencherPeriodoSelects();
+  renderPeriodoList();
+  renderSidebarPeriodo();
+  renderPeriodoBanner();
+  preencherSelectMaterias();
+  toast('Período excluído');
+  syncToSupabase();
+}
+
+function preencherPeriodoSelects() {
+  // Modal de matéria
+  const selModal = document.getElementById('mat-periodo-input');
+  if (selModal) {
+    selModal.innerHTML = '<option value="">— sem período —</option>' +
+      periodos.map(p => `<option value="${p.id}">${p.numero}º Período${p.descricao ? ' — ' + p.descricao : ''}</option>`).join('');
+  }
+  renderSidebarPeriodo();
+}
+
+function togglePeriodoFieldModal() {
+  const frente = document.getElementById('mat-frente-input').value;
+  const grupo = document.getElementById('mat-periodo-group');
+  if (grupo) grupo.style.display = frente === 'dir' ? 'block' : 'none';
+}
+
+// ============================================================
+// INIT
+// ============================================================
+window.onload = () => {
+  const t = localStorage.getItem('estuda_theme') || 'dark';
+  setTheme(t);
+  renderStats();
+  renderHistorico();
+  renderProgresso();
+  document.getElementById('api-key-input').value = apiKey;
+  if (!apiKey) document.getElementById('no-key-warning').style.display = 'block';
+  document.getElementById('red-texto').addEventListener('input', atualizarWordCount);
+  preencherSelectMaterias();
+  atualizarSelectMatMaterial();
+  preencherPeriodoSelects();
+  renderSidebarPeriodo();
+};
+
+// ============================================================
+// NAVEGAÇÃO
+// ============================================================
+const TITULOS = {dashboard:'Dashboard',materias:'Matérias & Unidades',historinha:'Historinhas',simulado:'Simulados',redacao:'Redação CACD',material:'Material de Estudo',progresso:'Progresso'};
+
+function goTo(panel, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + panel).classList.add('active');
+  if (el) el.classList.add('active');
+  else {
+    const found = document.querySelector(`.nav-item[onclick*="'${panel}'"]`);
+    if (found) found.classList.add('active');
+  }
+  document.getElementById('topbar-title').textContent = TITULOS[panel] || panel;
+  if (panel === 'materias') renderCrudLista();
+  if (panel === 'progresso') renderProgresso();
+  if (panel === 'material') atualizarSelectMatMaterial();
+}
+
+function goToNamed(panel, m) {
+  setModo(m);
+  goTo(panel, null);
+  if (panel === 'historinha') switchHistTab(m);
+  if (panel === 'simulado') switchSimTab(m);
+}
+
+// ============================================================
+// MODO CACD/DIREITO
+// ============================================================
+function setModo(m) {
+  modo = m;
+  document.getElementById('btn-cacd').className = 'mode-btn' + (m==='cacd'?' active-cacd':'');
+  document.getElementById('btn-dir').className = 'mode-btn' + (m==='dir'?' active-dir':'');
+  document.getElementById('topbar-sub').innerHTML = `Modo: <strong style="color:var(--${m})">${m==='cacd'?'CACD 2027':'Direito'}</strong>`;
+}
+
+// ============================================================
+// TABS
+// ============================================================
+function switchHistTab(t) {
+  ['cacd','dir'].forEach(x => document.getElementById('tab-hist-'+x).classList.toggle('active', x===t));
+  document.getElementById('hist-cacd').style.display = t==='cacd'?'block':'none';
+  document.getElementById('hist-dir').style.display = t==='dir'?'block':'none';
+  document.getElementById('result-historinha').classList.remove('visible');
+  preencherSelectMaterias();
+}
+
+function switchSimTab(t) {
+  simTabAtual = t;
+  ['cacd','dir'].forEach(x => document.getElementById('tab-sim-'+x).classList.toggle('active', x===t));
+  preencherSelectSimulado();
+}
+
+function switchMatTab(t) {
+  matTabAtual = t;
+  ['cacd','dir','periodos'].forEach(x => {
+    const btn = document.getElementById('tab-mat-'+x);
+    if (btn) btn.classList.toggle('active', x===t);
+  });
+  const isPeriodos = t === 'periodos';
+  document.getElementById('mat-periodos-panel').style.display = isPeriodos ? 'block' : 'none';
+  document.getElementById('mat-crud-panel').style.display = isPeriodos ? 'none' : 'block';
+  document.getElementById('btn-nova-materia').style.display = isPeriodos ? 'none' : 'inline-block';
+  if (isPeriodos) { renderPeriodoList(); return; }
+  materiaSelecionadaId = null;
+  document.getElementById('btn-nova-materia').className = 'btn btn-sm ' + (t==='cacd'?'btn-primary-cacd':'btn-primary-dir');
+  document.getElementById('crud-list-title').textContent = 'Matérias ' + (t==='cacd'?'CACD':'Direito');
+  renderCrudLista();
+  renderPeriodoBanner();
+  document.getElementById('crud-detail-empty').style.display = 'flex';
+  document.getElementById('crud-detail-content').style.display = 'none';
+}
+
+// ============================================================
+// PREENCHER SELECTS COM MATÉRIAS DO CRUD
+// ============================================================
+function preencherSelectMaterias() {
+  const cacdList = getMaterias('cacd');
+  const dirList = getMaterias('dir');
+  const selCacd = document.getElementById('cacd-materia');
+  const selDir = document.getElementById('dir-materia');
+  if (selCacd) selCacd.innerHTML = cacdList.length
+    ? cacdList.map(m=>`<option value="${m.id}">${m.nome}</option>`).join('')
+    : '<option value="">Nenhuma matéria cadastrada</option>';
+  if (selDir) selDir.innerHTML = dirList.length
+    ? dirList.map(m=>`<option value="${m.id}">${m.nome}</option>`).join('')
+    : '<option value="">Nenhuma matéria cadastrada</option>';
+  preencherSelectSimulado();
+}
+
+function preencherSelectSimulado() {
+  const lista = getMaterias(simTabAtual);
+  const sel = document.getElementById('sim-materia');
+  if (sel) sel.innerHTML = lista.length
+    ? lista.map(m=>`<option value="${m.id}">${m.nome}</option>`).join('')
+    : '<option value="">Nenhuma matéria cadastrada</option>';
+}
+
+// ============================================================
+// CRUD — LISTA
+// ============================================================
+function renderCrudLista() {
+  const lista = getMaterias(matTabAtual);
+  const body = document.getElementById('crud-list-body');
+  document.getElementById('crud-count').textContent = lista.length + (lista.length===1?' matéria':' matérias');
+  if (!lista.length) {
+    body.innerHTML = '<div style="padding:20px;font-size:13px;color:var(--muted);text-align:center">Nenhuma matéria.<br>Clique em "+ Nova matéria".</div>';
+    return;
+  }
+  body.innerHTML = lista.map(m => {
+    const total = (m.topicos.n1||[]).length + (m.topicos.n2||[]).length + (m.topicos.n3||[]).length;
+    const active = m.id === materiaSelecionadaId ? ' active' + (matTabAtual==='dir'?' dir-item':'') : '';
+    return `<div class="crud-item${active}" onclick="selecionarMateria('${m.id}')">
+      <span class="crud-item-name">${m.nome}</span>
+      <span class="crud-item-badge" style="background:rgba(${matTabAtual==='cacd'?'200,169,110':'110,155,200'},0.13);color:var(--${matTabAtual==='cacd'?'cacd':'dir'})">${total}</span>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// CRUD — DETALHE / UNIDADES
+// ============================================================
+const UNIDADE_INFO = {
+  n1: 'N1 — conteúdo exclusivo da primeira avaliação.',
+  n2: 'N2 — conteúdo próprio da N2. A prova pode cobrar também itens da N1.',
+  n3: 'N3 — conteúdo novo da N3. A prova pode cobrar tudo do semestre.',
+};
+
+function selecionarMateria(id) {
+  materiaSelecionadaId = id;
+  const m = getMateria(id);
+  if (!m) return;
+  document.getElementById('crud-detail-empty').style.display = 'none';
+  document.getElementById('crud-detail-content').style.display = 'flex';
+  document.getElementById('det-nome').textContent = m.nome;
+  document.getElementById('det-frente').textContent = m.frente === 'cacd' ? 'CACD' : 'Direito — ' + semestre(m);
+  renderCrudLista();
+  switchUnidade(unidadeAtual);
+}
+
+function semestre(m) { return ''; } // extensível
+
+function switchUnidade(u) {
+  unidadeAtual = u;
+  ['n1','n2','n3'].forEach(x => {
+    const btn = document.getElementById('utab-'+x);
+    btn.className = 'unidade-tab' + (x===u ? ' active-'+x : '');
+  });
+  document.getElementById('unidade-info').textContent = UNIDADE_INFO[u];
+  renderTopicoList();
+}
+
+function renderTopicoList() {
+  const m = getMateria(materiaSelecionadaId);
+  if (!m) return;
+  const topicos = m.topicos[unidadeAtual] || [];
+  const list = document.getElementById('topico-list');
+  if (!topicos.length) {
+    list.innerHTML = '<div style="font-size:12px;color:var(--muted);padding:8px 0">Nenhum tópico ainda. Adicione abaixo.</div>';
+    return;
+  }
+  list.innerHTML = topicos.map((t,i) => `
+    <div class="topico-item">
+      <span class="topico-item-text">${t}</span>
+      <button class="topico-del" onclick="removerTopico(${i})" title="Remover">×</button>
+    </div>`).join('');
+}
+
+function adicionarTopico() {
+  const input = document.getElementById('novo-topico-input');
+  const val = input.value.trim();
+  if (!val || !materiaSelecionadaId) return;
+  const m = getMateria(materiaSelecionadaId);
+  if (!m.topicos[unidadeAtual]) m.topicos[unidadeAtual] = [];
+  m.topicos[unidadeAtual].push(val);
+  salvarMaterias();
+  input.value = '';
+  renderTopicoList();
+  renderCrudLista();
+}
+
+function removerTopico(idx) {
+  const m = getMateria(materiaSelecionadaId);
+  m.topicos[unidadeAtual].splice(idx, 1);
+  salvarMaterias();
+  renderTopicoList();
+  renderCrudLista();
+}
+
+// ============================================================
+// CRUD — MODAL NOVA/EDITAR MATÉRIA
+// ============================================================
+function abrirModalMateria(id) {
+  editandoId = id || null;
+  const modal = document.getElementById('modal-materia');
+  const m = id ? getMateria(id) : null;
+  const frente = m ? m.frente : matTabAtual === 'periodos' ? 'dir' : matTabAtual;
+  document.getElementById('modal-mat-title').textContent = id ? 'Editar matéria' : 'Nova matéria';
+  document.getElementById('mat-nome-input').value = m ? m.nome : '';
+  document.getElementById('mat-frente-input').value = frente;
+  document.getElementById('btn-salvar-mat').className = 'btn ' + (frente==='cacd'?'btn-primary-cacd':'btn-primary-dir');
+  preencherPeriodoSelects();
+  // Preencher período se Direito
+  const grupoP = document.getElementById('mat-periodo-group');
+  const selP = document.getElementById('mat-periodo-input');
+  grupoP.style.display = frente === 'dir' ? 'block' : 'none';
+  if (selP && m) selP.value = m.periodoId || '';
+  modal.classList.add('visible');
+  setTimeout(() => document.getElementById('mat-nome-input').focus(), 100);
+}
+
+function fecharModalMateria() { document.getElementById('modal-materia').classList.remove('visible'); }
+
+function salvarMateria() {
+  const nome = document.getElementById('mat-nome-input').value.trim();
+  const frente = document.getElementById('mat-frente-input').value;
+  const periodoId = frente === 'dir' ? (document.getElementById('mat-periodo-input').value || null) : null;
+  if (!nome) { toast('Informe o nome da matéria'); return; }
+  if (editandoId) {
+    const m = getMateria(editandoId);
+    m.nome = nome; m.frente = frente; m.periodoId = periodoId;
+  } else {
+    materias.push({ id: uid(), nome, frente, periodoId, topicos: { n1:[], n2:[], n3:[] } });
+  }
+  salvarMaterias();
+  preencherSelectMaterias();
+  fecharModalMateria();
+  matTabAtual = frente === 'cacd' ? 'cacd' : 'dir';
+  renderCrudLista();
+  renderPeriodoList();
+  renderSidebarPeriodo();
+  toast(editandoId ? '✓ Matéria atualizada' : '✓ Matéria adicionada');
+  editandoId = null;
+}
+
+function editarMateria() {
+  if (materiaSelecionadaId) abrirModalMateria(materiaSelecionadaId);
+}
+
+function excluirMateria() {
+  if (!materiaSelecionadaId) return;
+  const m = getMateria(materiaSelecionadaId);
+  if (!confirm(`Excluir "${m.nome}"? Esta ação não pode ser desfeita.`)) return;
+  materias = materias.filter(x => x.id !== materiaSelecionadaId);
+  materiaSelecionadaId = null;
+  salvarMaterias();
+  preencherSelectMaterias();
+  renderCrudLista();
+  document.getElementById('crud-detail-empty').style.display = 'flex';
+  document.getElementById('crud-detail-content').style.display = 'none';
+  toast('Matéria excluída');
+}
+
+// ============================================================
+// HELPERS DE CONTEXTO DE MATÉRIA / UNIDADE PARA IA
+// ============================================================
+function getContextoMateria(materiaId, unidade) {
+  const m = getMateria(materiaId);
+  if (!m) return '';
+  let topicos = [];
+  if (unidade === 'n1' || unidade === 'todas') topicos = [...topicos, ...(m.topicos.n1||[])];
+  if (unidade === 'n2' || unidade === 'todas') topicos = [...topicos, ...(m.topicos.n2||[])];
+  if (unidade === 'n3' || unidade === 'todas') topicos = [...topicos, ...(m.topicos.n3||[])];
+  if (!topicos.length) return `matéria: ${m.nome}`;
+  return `matéria: ${m.nome}\ntópicos desta unidade: ${topicos.join(', ')}`;
+}
+
+function getEscopoUnidade(unidade, frente) {
+  if (frente === 'dir') {
+    if (unidade === 'N1') return 'Foque APENAS no conteúdo da N1.';
+    if (unidade === 'N2') return 'Foque no conteúdo da N2, podendo revisar pontos importantes da N1.';
+    if (unidade === 'N3') return 'Pode abordar conteúdo de todo o semestre (N1, N2 e N3), com ênfase no conteúdo novo da N3.';
+  }
+  return '';
+}
+
+// ============================================================
+// CLAUDE API
+// ============================================================
+async function callClaude(prompt) {
+  if (!apiKey) { toast('Configure sua chave de API primeiro'); openSetup(); throw new Error('no key'); }
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01'},
+    body: JSON.stringify({ model:'claude-haiku-4-5-20251001', max_tokens:1200, messages:[{role:'user',content:prompt}] })
+  });
+  if (!res.ok) { const e = await res.json().catch(()=>{}); throw new Error(e?.error?.message||`Erro HTTP ${res.status}`); }
+  const data = await res.json();
+  return data.content[0].text;
+}
+
+// ============================================================
+// HISTORINHA
+// ============================================================
+async function gerarHistorinha(tipo) {
+  const btn = document.getElementById('btn-hist-'+tipo);
+  const res = document.getElementById('result-historinha');
+  const txt = document.getElementById('result-hist-text');
+  const tag = document.getElementById('hist-tag');
+  let prompt;
+
+  if (tipo === 'cacd') {
+    const matId = document.getElementById('cacd-materia').value;
+    const unidade = document.getElementById('cacd-unidade').value;
+    const topicoCustom = document.getElementById('cacd-topico').value;
+    const nivel = document.getElementById('cacd-nivel').value;
+    const ctx = getContextoMateria(matId, unidade.toLowerCase());
+    const nivelMap = {intro:'introdutório',medio:'médio',avancado:'avançado para diplomata CACD'};
+    prompt = `Você é professor especialista em CACD (Concurso de Admissão à Carreira Diplomática do Brasil).
+Crie uma "historinha" de estudo sobre:
+${topicoCustom || ctx}
+${!topicoCustom && unidade !== 'todas' ? `Unidade: ${unidade} — cubra os tópicos listados acima.` : ''}
+Nível: ${nivelMap[nivel]}.
+
+A historinha deve:
+- Ser uma narrativa curta e envolvente (2-4 parágrafos) com personagens e situações reais ou fictícias
+- Introduzir os conceitos naturalmente na narrativa
+- Cobrir os pontos mais cobrados no CACD
+- Terminar com "CONCEITOS-CHAVE:" com bullet points secos: doutrina, tratados, casos, artigos
+Escreva em português brasileiro. Sem introduções desnecessárias.`;
+  } else {
+    const matId = document.getElementById('dir-materia').value;
+    const unidade = document.getElementById('dir-unidade').value;
+    const topicoCustom = document.getElementById('dir-topico').value;
+    const foco = document.getElementById('dir-foco').value;
+    const ctx = getContextoMateria(matId, unidade.toLowerCase());
+    const escopoUnidade = getEscopoUnidade(unidade, 'dir');
+    const focoMap = {conceito:'doutrina e conceito',jurisprudencia:'jurisprudência STJ/STF',caso:'caso prático',prova:'revisão objetiva para prova'};
+    prompt = `Você é professor de Direito brasileiro.
+Crie uma "historinha" de estudo sobre:
+${topicoCustom || ctx}
+${escopoUnidade}
+Foco: ${focoMap[foco]}.
+
+A historinha deve:
+- Ser uma narrativa curta (2-4 parágrafos) com personagens e situação concreta
+- Introduzir os conceitos jurídicos de forma natural
+- Ser fiel à doutrina brasileira e ao Código vigente
+- Terminar com "CONCEITOS-CHAVE:" com bullet points: conceito, requisitos, artigos relevantes, jurisprudência se aplicável
+Escreva em português brasileiro. Sem introduções desnecessárias.`;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></span>';
+  res.classList.remove('visible');
+  try {
+    const resposta = await callClaude(prompt);
+    txt.textContent = resposta;
+    tag.textContent = tipo==='cacd'?'CACD':'DIREITO';
+    tag.className = 'result-tag ' + (tipo==='cacd'?'tag-cacd':'tag-dir');
+    res.classList.add('visible');
+    stats.historinhas++;
+    salvarStats();
+    const matNome = tipo==='cacd'
+      ? (getMateria(document.getElementById('cacd-materia').value)||{}).nome||'—'
+      : (getMateria(document.getElementById('dir-materia').value)||{}).nome||'—';
+    const unid = tipo==='cacd' ? document.getElementById('cacd-unidade').value : document.getElementById('dir-unidade').value;
+    adicionarHistorico('historinha', tipo==='cacd'?'CACD':'Direito', `${matNome} — ${unid}`);
+  } catch(e) { if (e.message!=='no key') toast('Erro: '+e.message); }
+  finally {
+    btn.disabled = false;
+    btn.innerHTML = tipo==='cacd'?'✦ Gerar historinha':'⚖ Gerar historinha';
+  }
+}
+
+// ============================================================
+// SIMULADO
+// ============================================================
+async function gerarSimulado() {
+  const btn = document.getElementById('btn-simulado');
+  const matId = document.getElementById('sim-materia').value;
+  const unidade = document.getElementById('sim-unidade').value;
+  const topicoCustom = document.getElementById('sim-topico').value;
+  const qtd = document.getElementById('sim-qtd').value;
+  const armadilha = document.getElementById('sim-armadilha').value;
+  const ctx = getContextoMateria(matId, unidade.toLowerCase());
+  const escopoUnidade = getEscopoUnidade(unidade, simTabAtual);
+  const armMap = {nenhuma:'',cauda:'Use a técnica da "cauda venenosa" (alternativa quase correta com detalhe errado no final)',absolutismo:'Inclua alternativas com absolutismo (sempre, nunca, apenas, exclusivamente)',causa:'Use inversão de causa-efeito como distrator principal'};
+
+  const prompt = `Crie ${qtd} questão(ões) de múltipla escolha no estilo CACD sobre:
+${topicoCustom || ctx}
+${escopoUnidade}
+${armMap[armadilha]}
+
+Formato JSON puro (sem markdown):
+{"questoes":[{"enunciado":"texto","opcoes":["A) texto","B) texto","C) texto","D) texto","E) texto"],"gabarito":"A","explicacao":"explicação do gabarito e por que cada distrator está errado"}]}`;
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></span>';
+  document.getElementById('sim-questoes').style.display = 'none';
+  document.getElementById('sim-acao').style.display = 'none';
+  simRespostas = {}; simGabarito = {};
+
+  try {
+    const raw = await callClaude(prompt);
+    const data = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    simQuestoes = data.questoes;
+    data.questoes.forEach((q,i) => { simGabarito[i] = q.gabarito; });
+    renderQuestoes(data.questoes);
+    document.getElementById('sim-questoes').style.display = 'block';
+    document.getElementById('sim-acao').style.display = 'flex';
+  } catch(e) { if (e.message!=='no key') toast('Erro: '+e.message); }
+  finally {
+    btn.disabled = false;
+    btn.innerHTML = '◈ Gerar simulado';
+  }
+}
+
+function renderQuestoes(questoes) {
+  document.getElementById('sim-questoes').innerHTML = questoes.map((q,i) => `
+    <div class="question-card" id="qcard-${i}">
+      <div class="q-num">Questão ${i+1}</div>
+      <div class="q-text">${q.enunciado}</div>
+      <div class="options-list">
+        ${q.opcoes.map((op,j)=>`
+          <div class="option-item" id="opt-${i}-${j}" onclick="selecionarOpcao(${i},${j},'${String.fromCharCode(65+j)}')">
+            <div class="option-letter">${String.fromCharCode(65+j)}</div>
+            <div class="option-text">${op.replace(/^[A-E]\)\s*/,'')}</div>
+          </div>`).join('')}
+      </div>
+      <div class="gabarito-box" id="gabarito-${i}"></div>
+    </div>`).join('');
+}
+
+function selecionarOpcao(qi,oi,letra) {
+  document.querySelectorAll(`[id^="opt-${qi}-"]`).forEach(el=>el.classList.remove('selected'));
+  document.getElementById(`opt-${qi}-${oi}`).classList.add('selected');
+  simRespostas[qi] = letra;
+}
+
+function verificarSimulado() {
+  let acertos = 0;
+  simQuestoes.forEach((q,i)=>{
+    const resp = simRespostas[i], gab = simGabarito[i];
+    document.querySelectorAll(`[id^="opt-${i}-"]`).forEach((el,j)=>{
+      const l = String.fromCharCode(65+j);
+      if(l===gab) el.classList.add('correct');
+      else if(l===resp&&resp!==gab) el.classList.add('wrong');
+    });
+    const gb = document.getElementById('gabarito-'+i);
+    gb.textContent = `Gabarito: ${gab} — ${q.explicacao}`;
+    gb.classList.add('visible');
+    if(resp===gab) acertos++;
+  });
+  stats.questoes += simQuestoes.length;
+  stats.acertos += acertos;
+  stats.tentativas += simQuestoes.length;
+  salvarStats();
+  adicionarHistorico('simulado',simTabAtual==='cacd'?'CACD':'Direito',`${acertos}/${simQuestoes.length} acertos`);
+  toast(`✓ ${acertos} de ${simQuestoes.length} corretas`);
+  document.getElementById('sim-acao').innerHTML = `<button class="btn btn-secondary" onclick="novoSimulado()">Novo simulado</button>`;
+}
+
+function novoSimulado() {
+  document.getElementById('sim-questoes').innerHTML = '';
+  document.getElementById('sim-questoes').style.display = 'none';
+  document.getElementById('sim-acao').style.display = 'none';
+  document.getElementById('sim-acao').innerHTML = `<button class="btn btn-primary-cacd" onclick="verificarSimulado()">Verificar respostas</button><button class="btn btn-secondary" style="margin-left:8px" onclick="novoSimulado()">Novo simulado</button>`;
+  simQuestoes=[]; simRespostas={}; simGabarito={};
+}
+
+// ============================================================
+// REDAÇÃO
+// ============================================================
+async function gerarTemaRedacao() {
+  const btn = document.getElementById('btn-red-tema');
+  const area = document.getElementById('red-area').value;
+  const tema = document.getElementById('red-tema').value;
+  const prompt = `Você é examinador do CACD. Crie um tema de redação dissertativa sobre ${tema||area}.
+Formato JSON puro:
+{"titulo":"Tema da redação","instrucoes":"Instrução de 3-4 linhas: o que abordar, perspectiva esperada, contexto atual","extensao":"600-800 palavras","criterios":"Critérios: argumentação, coesão, conhecimento de política internacional, posicionamento do Brasil"}
+Apenas JSON.`;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></span>';
+  try {
+    const raw = await callClaude(prompt);
+    const data = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    document.getElementById('tema-titulo').textContent = data.titulo;
+    document.getElementById('tema-instrucoes').textContent = `${data.instrucoes}\n\nExtensão: ${data.extensao}\n${data.criterios}`;
+    document.getElementById('tema-box').style.display = 'block';
+    document.getElementById('red-form').style.display = 'block';
+  } catch(e) { if(e.message!=='no key') toast('Erro: '+e.message); }
+  finally { btn.disabled=false; btn.innerHTML='Gerar tema e instruções'; }
+}
+
+async function corrigirRedacao() {
+  const texto = document.getElementById('red-texto').value.trim();
+  const tema = document.getElementById('tema-titulo').textContent;
+  if(texto.length<200){toast('Escreva ao menos 200 caracteres');return;}
+  const btn = document.getElementById('btn-corrigir');
+  const res = document.getElementById('result-redacao');
+  const txt = document.getElementById('result-red-text');
+  const prompt = `Você é examinador do CACD. Corrija a redação sobre: "${tema}".
+REDAÇÃO:
+${texto}
+
+Avalie 0-10 em: (1) Argumentação, (2) Conhecimento de política internacional, (3) Estrutura dissertativa, (4) Coesão, (5) Perfil diplomático.
+Forneça: nota geral, 3 pontos positivos, 3 pontos a melhorar, sugestão de reescrita do parágrafo mais fraco. Seja direto.`;
+  btn.disabled=true;
+  btn.innerHTML='<span class="loading"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></span>';
+  res.classList.remove('visible');
+  try {
+    const resposta = await callClaude(prompt);
+    txt.textContent = resposta;
+    res.classList.add('visible');
+    stats.redacoes++;
+    salvarStats();
+    adicionarHistorico('redacao','CACD',tema);
+  } catch(e){if(e.message!=='no key')toast('Erro: '+e.message);}
+  finally{btn.disabled=false;btn.innerHTML='✎ Corrigir redação';}
+}
+
+function atualizarWordCount(){
+  const txt=document.getElementById('red-texto').value.trim();
+  document.getElementById('word-count').textContent=(txt?txt.split(/\s+/).length:0)+' palavras';
+}
+
+// ============================================================
+// STATS / HISTÓRICO / PROGRESSO
+// ============================================================
+function salvarStats(){localStorage.setItem('estuda_stats',JSON.stringify(stats));renderStats();}
+
+function renderStats(){
+  document.getElementById('stat-historinhas').textContent=stats.historinhas;
+  document.getElementById('stat-questoes').textContent=stats.questoes;
+  document.getElementById('stat-redacoes').textContent=stats.redacoes;
+  document.getElementById('stat-acertos').textContent=stats.tentativas>0?Math.round(stats.acertos/stats.tentativas*100)+'%':'—';
+}
+
+function adicionarHistorico(tipo,frente,detalhe){
+  historico.unshift({tipo,frente,detalhe,data:new Date().toLocaleDateString('pt-BR')});
+  if(historico.length>30)historico.pop();
+  localStorage.setItem('estuda_historico',JSON.stringify(historico));
+  renderHistorico();
+}
+
+function renderHistorico(){
+  const el=document.getElementById('historico-list');
+  const vazio=document.getElementById('historico-vazio');
+  if(!historico.length){el.style.display='none';vazio.style.display='block';return;}
+  el.style.display='flex';vazio.style.display='none';
+  const ic={historinha:'✦',simulado:'◈',redacao:'✎'};
+  el.innerHTML=historico.slice(0,10).map(h=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px">
+      <span>${ic[h.tipo]||'·'}</span>
+      <div style="flex:1"><div style="font-size:13px;font-weight:500">${h.detalhe||h.tipo}</div><div style="font-size:11px;color:var(--muted)">${h.tipo} · ${h.frente}</div></div>
+      <div style="font-size:11px;color:var(--muted)">${h.data}</div>
+    </div>`).join('');
+}
+
+function renderProgresso(){
+  const cacdList = getMaterias('cacd');
+  const dirList = getMaterias('dir');
+  document.getElementById('prog-cacd-list').innerHTML = cacdList.length
+    ? cacdList.map(m=>{
+        const total=(m.topicos.n1||[]).length+(m.topicos.n2||[]).length+(m.topicos.n3||[]).length;
+        const p=total?Math.min(100,Math.round(total*6)):0;
+        return `<div class="materia-row"><div class="materia-name">${m.nome.split('—')[0].trim()}</div><div class="materia-bar"><div class="materia-fill fill-cacd" style="width:${p}%"></div></div><div class="materia-pct" style="color:var(--cacd)">${total}t</div></div>`;
+      }).join('')
+    : '<div style="font-size:12px;color:var(--muted)">Nenhuma matéria cadastrada.</div>';
+  document.getElementById('prog-dir-list').innerHTML = dirList.length
+    ? dirList.map(m=>{
+        const total=(m.topicos.n1||[]).length+(m.topicos.n2||[]).length+(m.topicos.n3||[]).length;
+        const p=total?Math.min(100,Math.round(total*6)):0;
+        return `<div class="materia-row"><div class="materia-name">${m.nome.split('—')[0].trim()}</div><div class="materia-bar"><div class="materia-fill fill-dir" style="width:${p}%"></div></div><div class="materia-pct" style="color:var(--dir)">${total}t</div></div>`;
+      }).join('')
+    : '<div style="font-size:12px;color:var(--muted)">Nenhuma matéria cadastrada.</div>';
+}
+
+// ============================================================
+// TEMA / API / TOAST
+// ============================================================
+function setTheme(t){
+  document.body.classList.remove('theme-gray','theme-light');
+  if(t==='gray')document.body.classList.add('theme-gray');
+  if(t==='light')document.body.classList.add('theme-light');
+  ['dark','gray','light'].forEach(n=>document.getElementById('tbtn-'+n).classList.toggle('active',n===t));
+  localStorage.setItem('estuda_theme',t);
+}
+
+function openSetup(){document.getElementById('modal-setup').classList.add('visible');}
+function closeSetup(){document.getElementById('modal-setup').classList.remove('visible');}
+function salvarApiKey(){
+  const k=document.getElementById('api-key-input').value.trim();
+  if(!k.startsWith('sk-ant-')){toast('Chave inválida — deve começar com sk-ant-');return;}
+  apiKey=k;
+  localStorage.setItem('estuda_api_key',k);
+  document.getElementById('no-key-warning').style.display='none';
+  closeSetup();
+  toast('✓ Chave salva');
+}
+
+function salvarHistorinha(){
+  const txt=document.getElementById('result-hist-text').textContent;
+  const saved=JSON.parse(localStorage.getItem('estuda_historinhas')||'[]');
+  saved.unshift({texto:txt,data:new Date().toISOString()});
+  localStorage.setItem('estuda_historinhas',JSON.stringify(saved.slice(0,50)));
+  toast('✓ Historinha salva');
+}
+
+function copiarTexto(id){
+  navigator.clipboard.writeText(document.getElementById(id).textContent);
+  toast('✓ Copiado');
+}
+
+// ============================================================
+// MATERIAL DE ESTUDO
+// ============================================================
+let pdfTextoExtraido = '';
+let genOptSelecionada = 'historinha';
+let materialGeradoAtual = null;
+let materiaisSalvos = JSON.parse(localStorage.getItem('estuda_materiais_salvos') || '[]');
+
+function switchMatPanel(p) {
+  ['upload','salvos'].forEach(x => {
+    document.getElementById('tab-mat-'+x).classList.toggle('active', x===p);
+    document.getElementById('mat-'+x+'-panel').style.display = x===p ? 'block' : 'none';
+  });
+  if (p === 'salvos') renderMateriaisSalvos();
+}
+
+function switchInputTipo(t) {
+  ['pdf','texto'].forEach(x => {
+    document.getElementById('tab-inp-'+x).classList.toggle('active', x===t);
+    document.getElementById('inp-'+x).style.display = x===t ? 'block' : 'none';
+  });
+  if (t === 'pdf') { document.getElementById('mat-texto-input').value = ''; }
+  else { limparArquivo(); }
+}
+
+function selecionarGenOpt(opt) {
+  genOptSelecionada = opt;
+  ['historinha','flashcards','questoes'].forEach(o => {
+    document.getElementById('gopt-'+o).classList.toggle('selected', o===opt);
+  });
+  document.getElementById('mat-qtd-row').style.display = (opt==='flashcards'||opt==='questoes') ? 'block' : 'none';
+}
+
+function atualizarSelectMatMaterial() {
+  const frente = document.getElementById('mat-frente-sel').value;
+  const lista = getMaterias(frente);
+  const sel = document.getElementById('mat-materia-sel');
+  sel.innerHTML = lista.length
+    ? lista.map(m=>`<option value="${m.id}">${m.nome}</option>`).join('')
+    : '<option value="">Nenhuma matéria cadastrada</option>';
+}
+
+// --- PDF ---
+async function extrairTextoPDF(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
+        // Extração simples: lê bytes e pega strings legíveis
+        const bytes = new Uint8Array(e.target.result);
+        let text = '';
+        // Tenta decodificar como UTF-8 direto
+        try {
+          const decoder = new TextDecoder('utf-8');
+          const raw = decoder.decode(bytes);
+          // Extrai strings entre parenteses (formato PDF stream)
+          const matches = raw.match(/\(([^\)]{3,})\)/g) || [];
+          text = matches.map(m => m.slice(1,-1)).join(' ').replace(/\\n/g,'\n').replace(/\\/g,'');
+          // Fallback: pega trechos de texto legível
+          if (text.length < 100) {
+            text = raw.replace(/[^\x20-\x7E\n\r\t\u00C0-\u024F]/g,' ').replace(/\s{3,}/g,' ').trim().slice(0, 12000);
+          }
+        } catch(ex) {
+          text = 'Não foi possível extrair texto automaticamente. Cole o conteúdo na aba Texto.';
+        }
+        resolve(text.slice(0, 12000));
+      } catch(err) { reject(err); }
+    };
+    reader.onerror = reject;
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+function handleFileInput(input) {
+  const file = input.files[0];
+  if (file) processarArquivo(file);
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type === 'application/pdf') processarArquivo(file);
+  else toast('Apenas arquivos PDF são suportados');
+}
+
+async function processarArquivo(file) {
+  if (file.size > 4 * 1024 * 1024) { toast('Arquivo muito grande — máx. 4 MB'); return; }
+  document.getElementById('file-name').textContent = file.name;
+  document.getElementById('file-size').textContent = (file.size/1024).toFixed(0) + ' KB';
+  document.getElementById('file-preview').style.display = 'flex';
+  toast('Extraindo texto do PDF...');
+  try {
+    pdfTextoExtraido = await extrairTextoPDF(file);
+    toast('✓ PDF carregado — ' + pdfTextoExtraido.length + ' caracteres extraídos');
+  } catch(e) {
+    toast('Erro ao extrair PDF. Use a aba Texto.');
+    pdfTextoExtraido = '';
+  }
+}
+
+function limparArquivo() {
+  pdfTextoExtraido = '';
+  document.getElementById('file-preview').style.display = 'none';
+  document.getElementById('upload-zone').querySelector('input').value = '';
+  document.getElementById('file-name').textContent = '—';
+}
+
+// --- GERAÇÃO ---
+async function gerarDoMaterial() {
+  const btn = document.getElementById('btn-gerar-material');
+  const res = document.getElementById('result-material');
+  const body = document.getElementById('mat-result-body');
+  const tag = document.getElementById('mat-result-tag');
+  const frente = document.getElementById('mat-frente-sel').value;
+  const matId = document.getElementById('mat-materia-sel').value;
+  const unidade = document.getElementById('mat-unidade-sel').value;
+  const qtd = document.getElementById('mat-qtd').value;
+  const tipoInput = document.getElementById('tab-inp-pdf').classList.contains('active') ? 'pdf' : 'texto';
+
+  // Obter conteúdo
+  let conteudo = tipoInput === 'pdf'
+    ? pdfTextoExtraido
+    : document.getElementById('mat-texto-input').value.trim();
+
+  if (!conteudo || conteudo.length < 50) {
+    toast(tipoInput === 'pdf' ? 'Carregue um PDF primeiro' : 'Insira ao menos 50 caracteres de texto');
+    return;
+  }
+
+  const mat = getMateria(matId);
+  const matNome = mat ? mat.nome : 'sem matéria';
+  const frenteLabel = frente === 'cacd' ? 'CACD' : 'Direito';
+
+  let prompt = '';
+  if (genOptSelecionada === 'historinha') {
+    prompt = `Você é professor especialista em ${frenteLabel}.
+Com base no seguinte material de estudo sobre ${matNome} (Unidade: ${unidade}):
+
+---
+${conteudo.slice(0, 8000)}
+---
+
+Crie uma "historinha" de estudo:
+- Narrativa curta (2-4 parágrafos) com personagens e situações que ilustrem os conceitos do material
+- Cubra os pontos mais importantes do texto acima
+- Termine com "CONCEITOS-CHAVE:" com bullet points secos: definições, artigos, jurisprudência ou tratados mencionados
+Escreva em português brasileiro. Sem introduções desnecessárias.`;
+  } else if (genOptSelecionada === 'flashcards') {
+    prompt = `Com base no material de estudo sobre ${matNome} (${frenteLabel} — Unidade ${unidade}):
+
+---
+${conteudo.slice(0, 8000)}
+---
+
+Gere ${qtd} flashcards de estudo no formato JSON puro:
+{"flashcards":[{"pergunta":"texto da pergunta","resposta":"resposta objetiva e direta"}]}
+
+Regras:
+- Perguntas objetivas e específicas (não genéricas)
+- Respostas com no máximo 3 linhas
+- Cobrir os pontos mais importantes do material
+- Variar entre definições, aplicações, comparações e consequências jurídicas
+Apenas JSON, sem markdown.`;
+  } else {
+    prompt = `Com base no material de estudo sobre ${matNome} (${frenteLabel} — Unidade ${unidade}):
+
+---
+${conteudo.slice(0, 8000)}
+---
+
+Gere ${qtd} questões de múltipla escolha no formato JSON puro:
+{"questoes":[{"enunciado":"texto","opcoes":["A) texto","B) texto","C) texto","D) texto","E) texto"],"gabarito":"A","explicacao":"por que o gabarito está correto e os distratorres errados"}]}
+
+Regras:
+- Questões baseadas estritamente no conteúdo do material
+- Distradores plausíveis mas claramente incorretos para quem leu
+- Explicação didática e direta
+Apenas JSON, sem markdown.`;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></span>';
+  res.classList.remove('visible');
+
+  try {
+    const raw = await callClaude(prompt);
+
+    if (genOptSelecionada === 'historinha') {
+      body.textContent = raw;
+      tag.textContent = frenteLabel + ' — HISTORINHA';
+      tag.className = 'result-tag ' + (frente==='cacd'?'tag-cacd':'tag-dir');
+    } else if (genOptSelecionada === 'flashcards') {
+      const data = JSON.parse(raw.replace(/```json|```/g,'').trim());
+      tag.textContent = frenteLabel + ' — FLASHCARDS';
+      tag.className = 'result-tag ' + (frente==='cacd'?'tag-cacd':'tag-dir');
+      body.innerHTML = `<div class="flashcard-deck">${data.flashcards.map((fc,i)=>`
+        <div class="flashcard" id="fc-${i}" onclick="toggleFlashcard(${i})">
+          <div class="flashcard-front">
+            <div>
+              <div class="fc-num">CARD ${i+1}</div>
+              <div>${fc.pergunta}</div>
+            </div>
+            <span class="flashcard-toggle">▼</span>
+          </div>
+          <div class="flashcard-back">${fc.resposta}</div>
+        </div>`).join('')}</div>`;
+    } else {
+      const data = JSON.parse(raw.replace(/```json|```/g,'').trim());
+      tag.textContent = frenteLabel + ' — QUESTÕES';
+      tag.className = 'result-tag ' + (frente==='cacd'?'tag-cacd':'tag-dir');
+      body.innerHTML = data.questoes.map((q,i)=>`
+        <div class="question-card" style="margin-bottom:14px">
+          <div class="q-num">Questão ${i+1}</div>
+          <div class="q-text">${q.enunciado}</div>
+          <div class="options-list">
+            ${q.opcoes.map((op,j)=>`
+              <div class="option-item" onclick="this.parentElement.querySelectorAll('.option-item').forEach(e=>e.classList.remove('selected'));this.classList.add('selected')">
+                <div class="option-letter">${String.fromCharCode(65+j)}</div>
+                <div class="option-text">${op.replace(/^[A-E]\)\s*/,'')}</div>
+              </div>`).join('')}
+          </div>
+          <div class="gabarito-box visible" style="margin-top:10px"><strong>Gabarito: ${q.gabarito}</strong> — ${q.explicacao}</div>
+        </div>`).join('');
+    }
+
+    materialGeradoAtual = {
+      tipo: genOptSelecionada,
+      frente,
+      matId,
+      matNome,
+      unidade,
+      conteudoRaw: raw,
+      data: new Date().toISOString()
+    };
+
+    res.classList.add('visible');
+    stats.historinhas += genOptSelecionada === 'historinha' ? 1 : 0;
+    salvarStats();
+    adicionarHistorico('material', frenteLabel, `${matNome} — ${unidade} (${genOptSelecionada})`);
+  } catch(e) {
+    if (e.message !== 'no key') toast('Erro: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '⊕ Gerar a partir do material';
+  }
+}
+
+function toggleFlashcard(i) {
+  document.getElementById('fc-'+i).classList.toggle('open');
+}
+
+function salvarMaterialGerado() {
+  if (!materialGeradoAtual) return;
+  materiaisSalvos.unshift(materialGeradoAtual);
+  if (materiaisSalvos.length > 50) materiaisSalvos.pop();
+  localStorage.setItem('estuda_materiais_salvos', JSON.stringify(materiaisSalvos));
+  toast('✓ Material salvo');
+}
+
+function renderMateriaisSalvos() {
+  const lista = document.getElementById('mat-salvos-lista');
+  const vazio = document.getElementById('mat-salvos-vazio');
+  if (!materiaisSalvos.length) {
+    lista.innerHTML = '';
+    vazio.style.display = 'block';
+    return;
+  }
+  vazio.style.display = 'none';
+  const tipoIcon = {historinha:'✦', flashcards:'🃏', questoes:'◈'};
+  const tipoLabel = {historinha:'Historinha', flashcards:'Flashcards', questoes:'Questões'};
+  lista.innerHTML = `<div class="mat-saved-list">${materiaisSalvos.map((m,i)=>`
+    <div class="mat-saved-item">
+      <span style="font-size:20px">${tipoIcon[m.tipo]||'·'}</span>
+      <div class="mat-saved-meta">
+        <div class="mat-saved-title">${m.matNome} — ${m.unidade}</div>
+        <div class="mat-saved-sub">${tipoLabel[m.tipo]} · ${m.frente==='cacd'?'CACD':'Direito'} · ${new Date(m.data).toLocaleDateString('pt-BR')}</div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-secondary btn-sm" onclick="visualizarMaterialSalvo(${i})">Ver</button>
+        <button class="btn btn-danger btn-sm" onclick="excluirMaterialSalvo(${i})">×</button>
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+function visualizarMaterialSalvo(i) {
+  const m = materiaisSalvos[i];
+  switchMatPanel('upload');
+  // redireciona para painel de resultado
+  const res = document.getElementById('result-material');
+  const body = document.getElementById('mat-result-body');
+  const tag = document.getElementById('mat-result-tag');
+  const tipoLabel = {historinha:'Historinha', flashcards:'Flashcards', questoes:'Questões'};
+  tag.textContent = (m.frente==='cacd'?'CACD':'Direito') + ' — ' + (tipoLabel[m.tipo]||'').toUpperCase();
+  tag.className = 'result-tag ' + (m.frente==='cacd'?'tag-cacd':'tag-dir');
+  if (m.tipo === 'historinha') {
+    body.textContent = m.conteudoRaw;
+  } else {
+    try {
+      const data = JSON.parse(m.conteudoRaw.replace(/```json|```/g,'').trim());
+      if (m.tipo === 'flashcards') {
+        body.innerHTML = `<div class="flashcard-deck">${data.flashcards.map((fc,i)=>`
+          <div class="flashcard" id="fcs-${i}" onclick="document.getElementById('fcs-${i}').classList.toggle('open')">
+            <div class="flashcard-front"><div><div class="fc-num">CARD ${i+1}</div><div>${fc.pergunta}</div></div><span class="flashcard-toggle">▼</span></div>
+            <div class="flashcard-back">${fc.resposta}</div>
+          </div>`).join('')}</div>`;
+      } else {
+        body.innerHTML = data.questoes.map((q,i)=>`
+          <div class="question-card" style="margin-bottom:14px">
+            <div class="q-num">Questão ${i+1}</div>
+            <div class="q-text">${q.enunciado}</div>
+            <div class="gabarito-box visible" style="margin-top:8px"><strong>Gabarito: ${q.gabarito}</strong> — ${q.explicacao}</div>
+          </div>`).join('');
+      }
+    } catch(e) { body.textContent = m.conteudoRaw; }
+  }
+  res.classList.add('visible');
+  res.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function excluirMaterialSalvo(i) {
+  materiaisSalvos.splice(i, 1);
+  localStorage.setItem('estuda_materiais_salvos', JSON.stringify(materiaisSalvos));
+  renderMateriaisSalvos();
+  toast('Material excluído');
+}
+
+function toast(msg,dur=3000){
+  const el=document.getElementById('toast');
+  el.textContent=msg;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),dur);
+}
+
+// ============================================================
+// SUPABASE — AUTH E SYNC
+// ============================================================
+let sb = null;
+let currentUser = null;
+let isOnline = navigator.onLine;
+
+function initSupabase() {
+  const url = localStorage.getItem('sb_url');
+  const key = localStorage.getItem('sb_key');
+  if (!url || !key) return false;
+  try {
+    sb = supabase.createClient(url, key);
+    return true;
+  } catch(e) { return false; }
+}
+
+// ONLINE / OFFLINE
+window.addEventListener('online',  () => { isOnline = true;  renderSyncBadge(); if(currentUser) syncToSupabase(); });
+window.addEventListener('offline', () => { isOnline = false; renderSyncBadge(); });
+
+function renderSyncBadge() {
+  const el = document.getElementById('sync-status');
+  if (!el) return;
+  if (currentUser && isOnline) {
+    el.innerHTML = `<span class="sync-badge sync-online"><span class="sync-dot"></span>Sincronizado</span>`;
+  } else if (currentUser && !isOnline) {
+    el.innerHTML = `<span class="sync-badge sync-offline"><span class="sync-dot"></span>Offline</span>`;
+  } else {
+    el.innerHTML = `<span class="sync-badge sync-offline"><span class="sync-dot"></span>Local</span>`;
+  }
+}
+
+// AUTH TABS
+function switchAuthTab(t) {
+  ['login','signup'].forEach(x => document.getElementById('atab-'+x).classList.toggle('active', x===t));
+  document.getElementById('btn-auth').textContent = t === 'login' ? 'Entrar' : 'Criar conta';
+  document.getElementById('auth-error').style.display = 'none';
+  document.getElementById('auth-success').style.display = 'none';
+}
+
+async function submitAuth() {
+  if (!sb) { showAuthError('Configure o Supabase primeiro em ⚙ Configurar API'); return; }
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  const isLogin = document.getElementById('atab-login').classList.contains('active');
+  const btn = document.getElementById('btn-auth');
+  if (!email || !password) { showAuthError('Preencha email e senha'); return; }
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></span>';
+  try {
+    let result;
+    if (isLogin) {
+      result = await sb.auth.signInWithPassword({ email, password });
+    } else {
+      result = await sb.auth.signUp({ email, password });
+    }
+    if (result.error) { showAuthError(result.error.message); return; }
+    if (!isLogin && !result.data.session) {
+      showAuthSuccess('Conta criada! Verifique seu email para confirmar.');
+      return;
+    }
+    currentUser = result.data.user;
+    await entrarNoApp();
+  } catch(e) { showAuthError(e.message); }
+  finally { btn.disabled = false; btn.textContent = isLogin ? 'Entrar' : 'Criar conta'; }
+}
+
+function showAuthError(msg) {
+  const el = document.getElementById('auth-error');
+  el.textContent = msg; el.style.display = 'block';
+  document.getElementById('auth-success').style.display = 'none';
+}
+
+function showAuthSuccess(msg) {
+  const el = document.getElementById('auth-success');
+  el.textContent = msg; el.style.display = 'block';
+  document.getElementById('auth-error').style.display = 'none';
+}
+
+function usarOffline() {
+  document.getElementById('auth-screen').style.display = 'none';
+  renderSyncBadge();
+}
+
+async function entrarNoApp() {
+  document.getElementById('auth-screen').style.display = 'none';
+  // Mostrar user no sidebar
+  const email = currentUser.email || '';
+  document.getElementById('user-avatar').textContent = email[0].toUpperCase();
+  document.getElementById('user-email-display').textContent = email;
+  document.getElementById('user-menu').style.display = 'flex';
+  document.getElementById('logo-block').style.display = 'none';
+  renderSyncBadge();
+  // Carregar dados do Supabase (tem precedência sobre localStorage)
+  await carregarDoSupabase();
+}
+
+async function logout() {
+  if (sb) await sb.auth.signOut();
+  currentUser = null;
+  document.getElementById('user-menu').style.display = 'none';
+  document.getElementById('logo-block').style.display = 'block';
+  document.getElementById('auth-screen').style.display = 'flex';
+  renderSyncBadge();
+}
+
+// ============================================================
+// SYNC — CARREGAR DO SUPABASE
+// ============================================================
+async function carregarDoSupabase() {
+  if (!sb || !currentUser) return;
+  try {
+    // Períodos
+    const { data: pers } = await sb.from('periodos').select('*').eq('user_id', currentUser.id).order('numero');
+    if (pers && pers.length) {
+      periodos = pers.map(p => ({ id: p.id, numero: p.numero, descricao: p.descricao||'', ativo: p.ativo }));
+      const ativo = pers.find(p => p.ativo);
+      periodoAtivo = ativo ? ativo.id : null;
+      salvarPeriodosLocal();
+    }
+    // Matérias (incluir periodo_id)
+    const { data: mats } = await sb.from('materias').select('*').eq('user_id', currentUser.id);
+    if (mats && mats.length) {
+      materias = mats.map(m => ({
+        id: m.id, nome: m.nome, frente: m.frente, periodoId: m.periodo_id||null,
+        topicos: { n1: m.topicos_n1||[], n2: m.topicos_n2||[], n3: m.topicos_n3||[] }
+      }));
+      localStorage.setItem('estuda_materias', JSON.stringify(materias));
+    }
+    // Stats
+    const { data: st } = await sb.from('stats').select('*').eq('user_id', currentUser.id).single();
+    if (st) {
+      stats = { historinhas: st.historinhas, questoes: st.questoes, acertos: st.acertos, tentativas: st.tentativas, redacoes: st.redacoes };
+      localStorage.setItem('estuda_stats', JSON.stringify(stats));
+    }
+    // Histórico
+    const { data: hist } = await sb.from('historico').select('*').eq('user_id', currentUser.id).order('criado_em', { ascending: false }).limit(30);
+    if (hist) {
+      historico = hist.map(h => ({ tipo: h.tipo, frente: h.frente, detalhe: h.detalhe, data: new Date(h.criado_em).toLocaleDateString('pt-BR') }));
+      localStorage.setItem('estuda_historico', JSON.stringify(historico));
+    }
+    // Preferências
+    const { data: pref } = await sb.from('preferencias').select('*').eq('user_id', currentUser.id).single();
+    if (pref) {
+      if (pref.theme) setTheme(pref.theme);
+      if (pref.anthropic_key) { apiKey = pref.anthropic_key; localStorage.setItem('estuda_api_key', apiKey); }
+    }
+    // Materiais salvos
+    const { data: mSalvos } = await sb.from('materiais_salvos').select('*').eq('user_id', currentUser.id).order('criado_em', { ascending: false }).limit(50);
+    if (mSalvos) {
+      materiaisSalvos = mSalvos.map(m => ({ tipo: m.tipo, frente: m.frente, matId: m.materia_id, matNome: m.mat_nome, unidade: m.unidade, conteudoRaw: m.conteudo_raw, data: m.criado_em }));
+      localStorage.setItem('estuda_materiais_salvos', JSON.stringify(materiaisSalvos));
+    }
+    renderStats(); renderHistorico(); renderProgresso(); preencherSelectMaterias(); atualizarSelectMatMaterial();
+    toast('✓ Dados sincronizados');
+  } catch(e) { console.warn('Sync error:', e); }
+}
+
+// ============================================================
+// SYNC — GRAVAR NO SUPABASE
+// ============================================================
+async function syncToSupabase() {
+  if (!sb || !currentUser || !isOnline) return;
+  const uid = currentUser.id;
+  try {
+    // Períodos (upsert)
+    if (periodos.length) {
+      const persDb = periodos.map(p => ({ id: p.id, user_id: uid, numero: p.numero, descricao: p.descricao||null, ativo: p.id === periodoAtivo }));
+      await sb.from('periodos').upsert(persDb, { onConflict: 'id' });
+    }
+    // Matérias (upsert com periodo_id)
+    const matsDb = materias.map(m => ({
+      id: m.id, user_id: uid, nome: m.nome, frente: m.frente,
+      periodo_id: m.periodoId||null,
+      topicos_n1: m.topicos.n1||[], topicos_n2: m.topicos.n2||[], topicos_n3: m.topicos.n3||[]
+    }));
+    if (matsDb.length) await sb.from('materias').upsert(matsDb, { onConflict: 'id' });
+    // Stats (upsert)
+    await sb.from('stats').upsert({ user_id: uid, ...stats }, { onConflict: 'user_id' });
+    // Preferências (upsert)
+    await sb.from('preferencias').upsert({
+      user_id: uid,
+      theme: localStorage.getItem('estuda_theme') || 'dark',
+      anthropic_key: apiKey,
+      periodo_ativo_id: periodoAtivo || null
+    }, { onConflict: 'user_id' });
+  } catch(e) { console.warn('Sync write error:', e); }
+}
+
+async function syncHistoricoItem(item) {
+  if (!sb || !currentUser || !isOnline) return;
+  try {
+    await sb.from('historico').insert({ user_id: currentUser.id, tipo: item.tipo, frente: item.frente, detalhe: item.detalhe });
+  } catch(e) {}
+}
+
+async function syncMaterialSalvo(m) {
+  if (!sb || !currentUser || !isOnline) return;
+  try {
+    await sb.from('materiais_salvos').insert({
+      user_id: currentUser.id, materia_id: m.matId||null, mat_nome: m.matNome,
+      frente: m.frente, unidade: m.unidade, tipo: m.tipo, conteudo_raw: m.conteudoRaw
+    });
+  } catch(e) {}
+}
+
+// Sobrescrever funções existentes para incluir sync
+const _origSalvarMaterias = salvarMaterias;
+salvarMaterias = function() {
+  localStorage.setItem('estuda_materias', JSON.stringify(materias));
+  syncToSupabase();
+};
+
+const _origSalvarStats = salvarStats;
+salvarStats = function() {
+  localStorage.setItem('estuda_stats', JSON.stringify(stats));
+  renderStats();
+  syncToSupabase();
+};
+
+const _origAdicionarHistorico = adicionarHistorico;
+adicionarHistorico = function(tipo, frente, detalhe) {
+  const item = { tipo, frente, detalhe, data: new Date().toLocaleDateString('pt-BR') };
+  historico.unshift(item);
+  if (historico.length > 30) historico.pop();
+  localStorage.setItem('estuda_historico', JSON.stringify(historico));
+  renderHistorico();
+  syncHistoricoItem(item);
+};
+
+const _origSalvarMaterialGerado = salvarMaterialGerado;
+salvarMaterialGerado = function() {
+  if (!materialGeradoAtual) return;
+  materiaisSalvos.unshift(materialGeradoAtual);
+  if (materiaisSalvos.length > 50) materiaisSalvos.pop();
+  localStorage.setItem('estuda_materiais_salvos', JSON.stringify(materiaisSalvos));
+  syncMaterialSalvo(materialGeradoAtual);
+  toast('✓ Material salvo');
+};
+
+// Sobrescrever salvarApiKey para incluir Supabase
+const _origSalvarApiKey = salvarApiKey;
+salvarApiKey = function() {
+  const sbUrl = document.getElementById('sb-url-input').value.trim();
+  const sbKey = document.getElementById('sb-key-input').value.trim();
+  const k = document.getElementById('api-key-input').value.trim();
+  if (sbUrl && sbKey) {
+    localStorage.setItem('sb_url', sbUrl);
+    localStorage.setItem('sb_key', sbKey);
+    initSupabase();
+  }
+  if (k) {
+    if (!k.startsWith('sk-ant-')) { toast('Chave Anthropic inválida'); return; }
+    apiKey = k;
+    localStorage.setItem('estuda_api_key', k);
+    document.getElementById('no-key-warning').style.display = 'none';
+  }
+  closeSetup();
+  toast('✓ Configurações salvas');
+  syncToSupabase();
+};
+
+// ============================================================
+// INIT SUPABASE NA ABERTURA
+// ============================================================
+(async function initAuth() {
+  // Pré-preencher campos do modal se já salvos
+  const savedUrl = localStorage.getItem('sb_url') || '';
+  const savedSbKey = localStorage.getItem('sb_key') || '';
+  if (document.getElementById('sb-url-input')) document.getElementById('sb-url-input').value = savedUrl;
+  if (document.getElementById('sb-key-input')) document.getElementById('sb-key-input').value = savedSbKey;
+
+  if (!initSupabase()) {
+    // Sem Supabase configurado — mostrar opção offline diretamente
+    return;
+  }
+  // Verificar sessão existente
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    currentUser = session.user;
+    await entrarNoApp();
+  }
+  // Escutar mudanças de auth
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN' && session) {
+      currentUser = session.user;
+    } else if (event === 'SIGNED_OUT') {
+      currentUser = null;
+    }
+  });
+})();
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    document.querySelectorAll('.modal-overlay.visible').forEach(m=>m.classList.remove('visible'));
+  }
+});
+</script>
+</body>
+</html>

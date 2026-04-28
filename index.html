@@ -275,6 +275,127 @@ body.theme-gray::before,body.theme-light::before{background-image:none;}
 .user-email{font-size:11px;color:var(--muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .logout-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;font-family:var(--font-body);transition:color .12s;flex-shrink:0;}
 .logout-btn:hover{color:var(--red);}
+
+/* SM-2 FLASHCARDS */
+.fc-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.fc-card-wrap{perspective:1000px;min-height:200px;margin-bottom:18px;cursor:pointer;}
+.fc-card{width:100%;min-height:200px;position:relative;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.4,0,.2,1);}
+.fc-card.flipped{transform:rotateY(180deg);}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);border:1px solid var(--border2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px;text-align:center;}
+.fc-front{background:var(--bg2);}
+.fc-back{background:var(--bg3);transform:rotateY(180deg);}
+.fc-face-label{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.fc-face-text{font-size:15px;line-height:1.6;font-weight:500;}
+.fc-face-hint{font-size:12px;color:var(--muted);margin-top:14px;}
+.fc-answer-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.fc-btn{padding:11px 8px;border-radius:10px;border:none;font-family:var(--font-body);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.fc-btn-errei{background:rgba(200,110,110,0.15);color:var(--red);border:1px solid rgba(200,110,110,0.3);}
+.fc-btn-errei:hover{background:rgba(200,110,110,0.28);}
+.fc-btn-quase{background:rgba(200,169,110,0.15);color:var(--cacd);border:1px solid rgba(200,169,110,0.3);}
+.fc-btn-quase:hover{background:rgba(200,169,110,0.28);}
+.fc-btn-acertei{background:rgba(110,200,155,0.15);color:var(--green);border:1px solid rgba(110,200,155,0.3);}
+.fc-btn-acertei:hover{background:rgba(110,200,155,0.28);}
+.fc-btn-sub{font-size:10px;font-weight:400;opacity:.7;}
+.fc-progress-bar{height:4px;background:var(--bg3);border-radius:2px;margin-bottom:16px;overflow:hidden;}
+.fc-progress-fill{height:100%;background:var(--green);border-radius:2px;transition:width .3s;}
+.fc-empty{text-align:center;padding:40px 20px;color:var(--muted);}
+.fc-empty-icon{font-size:36px;margin-bottom:10px;}
+.fc-empty-title{font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--text);margin-bottom:5px;}
+.fc-state-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;}
+.state-novo{background:rgba(122,120,112,0.2);color:var(--muted);}
+.state-aprendendo{background:rgba(110,155,200,0.2);color:var(--dir);}
+.state-dominado{background:rgba(110,200,155,0.2);color:var(--green);}
+
+/* XP / STREAK */
+.xp-bar-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px;}
+.xp-bar-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.xp-level-badge{font-family:var(--font-head);font-size:12px;font-weight:700;padding:3px 11px;border-radius:20px;}
+.lvl-bronze{background:rgba(176,141,87,0.2);color:#b08d57;}
+.lvl-prata{background:rgba(160,160,170,0.2);color:#a0a0aa;}
+.lvl-ouro{background:rgba(212,175,55,0.2);color:#d4af37;}
+.lvl-diamante{background:rgba(110,155,200,0.2);color:var(--dir);}
+.xp-bar{height:7px;background:var(--bg3);border-radius:4px;overflow:hidden;}
+.xp-bar-fill{height:100%;border-radius:4px;transition:width .5s;}
+.streak-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.streak-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;}
+.streak-num{font-family:var(--font-head);font-size:30px;font-weight:800;line-height:1;}
+.streak-label{font-size:11px;color:var(--muted);margin-top:3px;}
+.xp-action-row{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:var(--bg3);border-radius:7px;font-size:13px;margin-bottom:5px;}
+.xp-val{font-weight:700;color:var(--cacd);}
+
+/* QUIZ */
+.quiz-tipo-sel{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+.quiz-tipo-card{background:var(--bg2);border:2px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all .15s;text-align:center;}
+.quiz-tipo-card:hover{border-color:var(--border2);}
+.quiz-tipo-card.selected{border-color:var(--cacd);background:rgba(200,169,110,0.07);}
+.quiz-tipo-icon{font-size:22px;margin-bottom:5px;}
+.quiz-tipo-label{font-size:13px;font-weight:600;}
+.quiz-tipo-desc{font-size:11px;color:var(--muted);margin-top:2px;}
+.vf-options{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
+.vf-btn{padding:18px;border-radius:10px;border:2px solid var(--border);background:var(--bg3);font-size:22px;font-weight:700;cursor:pointer;font-family:var(--font-head);transition:all .15s;}
+.vf-btn:hover{border-color:var(--border2);}
+.vf-btn.correct{border-color:var(--green);background:rgba(110,200,155,0.1);color:var(--green);}
+.vf-btn.wrong{border-color:var(--red);background:rgba(200,110,110,0.1);color:var(--red);}
+.quiz-result-banner{border-radius:9px;padding:12px 16px;margin-top:14px;font-size:13px;font-weight:500;display:none;}
+.quiz-result-banner.visible{display:block;}
+.banner-correct{background:rgba(110,200,155,0.12);border:1px solid rgba(110,200,155,0.3);color:var(--green);}
+.banner-wrong{background:rgba(200,110,110,0.12);border:1px solid rgba(200,110,110,0.3);color:var(--red);}
+.quiz-score-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;text-align:center;}
+.quiz-score-num{font-family:var(--font-head);font-size:48px;font-weight:800;line-height:1;margin-bottom:6px;}
+
+/* PROGRESSO AVANÇADO */
+.consist-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:10px;}
+.consist-day{aspect-ratio:1;border-radius:3px;background:var(--bg3);transition:background .2s;position:relative;}
+.consist-day.estudou{background:var(--green);}
+.consist-day.hoje{outline:2px solid var(--cacd);outline-offset:1px;}
+.dominio-bar{height:9px;background:var(--bg3);border-radius:5px;overflow:hidden;display:flex;margin-top:5px;}
+.dominio-seg{height:100%;transition:width .4s ease;}
+.seg-novo{background:var(--muted);}.seg-aprendendo{background:var(--dir);}.seg-dominado{background:var(--green);}
+.prior-item{display:flex;align-items:center;gap:10px;padding:9px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:9px;margin-bottom:7px;}
+.prior-badge{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.prior-name{flex:1;font-size:13px;}
+.prior-pct{font-size:12px;font-weight:600;color:var(--muted);}
+
+/* PROGRAMAS */
+.prog-toggle{display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:3px;max-width:340px;overflow-x:auto;}
+.prog-btn{padding:5px 14px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--muted);font-family:var(--font-body);white-space:nowrap;transition:all .15s;flex-shrink:0;}
+.prog-btn.active{background:var(--bg2);color:var(--text);border:1px solid var(--border2);}
+.prog-btn.concurso.active{color:var(--cacd);}
+.prog-btn.graduacao.active,.prog-btn.posgraduacao.active,.prog-btn.livre.active{color:var(--dir);}
+.prog-add-btn{padding:4px 8px;border-radius:6px;font-size:14px;cursor:pointer;border:none;background:transparent;color:var(--muted);font-family:var(--font-body);transition:color .15s;flex-shrink:0;}
+.prog-add-btn:hover{color:var(--text);}
+
+/* CRUD PROGRAMAS */
+.prog-type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px;}
+.prog-type-card{background:var(--bg3);border:2px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all .15s;text-align:center;}
+.prog-type-card:hover{border-color:var(--border2);}
+.prog-type-card.selected{border-color:var(--cacd);background:rgba(200,169,110,0.07);}
+.prog-type-icon{font-size:22px;margin-bottom:5px;}
+.prog-type-label{font-size:13px;font-weight:600;}
+.prog-type-desc{font-size:11px;color:var(--muted);margin-top:2px;}
+
+.prog-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;}
+.prog-item-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.prog-item-info{flex:1;min-width:0;}
+.prog-item-nome{font-size:14px;font-weight:600;}
+.prog-item-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.prog-item-ativo{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;background:rgba(110,200,155,0.15);color:var(--green);}
+
+.deck-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden;margin-bottom:10px;}
+.deck-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.deck-card.cacd::before{background:linear-gradient(90deg,var(--cacd),transparent);}
+.deck-card.dir::before{background:linear-gradient(90deg,var(--dir),transparent);}
+.deck-card:hover{border-color:var(--border2);}
+.deck-stats{display:flex;gap:16px;margin:10px 0;}
+.deck-stat{text-align:center;}
+.deck-stat-num{font-family:var(--font-head);font-size:17px;font-weight:800;line-height:1;}
+.deck-stat-label{font-size:10px;color:var(--muted);}
+.deck-stat-novo .deck-stat-num{color:var(--muted);}
+.deck-stat-aprendendo .deck-stat-num{color:var(--dir);}
+.deck-stat-dominado .deck-stat-num{color:var(--green);}
+.subtopico-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;}
+.subtopico-name{flex:1;font-size:13px;}
+.revisado-hoje-badge{font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(110,200,155,0.15);color:var(--green);font-weight:600;}
 </style>
 </head>
 <body>
@@ -317,7 +438,7 @@ body.theme-gray::before,body.theme-light::before{background-image:none;}
   </div>
   <div class="logo" id="logo-block">
     <div class="logo-mark">Estuda<span>.AI</span></div>
-    <div class="logo-sub">CACD & Direito</div>
+    <div class="logo-sub" id="logo-sub">Carregando...</div>
   </div>
   <div class="nav-section">
     <div class="nav-label">Geral</div>
@@ -330,10 +451,13 @@ body.theme-gray::before,body.theme-light::before{background-image:none;}
     <div class="nav-item" onclick="goTo('simulado',this)"><span class="icon">◈</span>Simulados</div>
     <div class="nav-item" onclick="goTo('redacao',this)"><span class="icon">✎</span>Redação CACD</div>
     <div class="nav-item" onclick="goTo('material',this)"><span class="icon">⊕</span>Material de Estudo</div>
+    <div class="nav-item" onclick="goTo('baralhos',this)"><span class="icon">🃏</span>Baralhos</div>
+    <div class="nav-item" onclick="goTo('revisao',this)"><span class="icon">▶</span>Revisão SM-2</div>
   </div>
   <div class="nav-section" style="margin-top:10px">
     <div class="nav-label">Configuração</div>
-    <div class="nav-item" onclick="goTo('materias',this)"><span class="icon">☰</span>Matérias & Períodos</div>
+    <div class="nav-item" onclick="goTo('programas',this)"><span class="icon">⊟</span>Programas</div>
+    <div class="nav-item" onclick="goTo('materias',this)"><span class="icon">☰</span>Matérias</div>
   </div>
   <!-- Período ativo (Direito) -->
   <div id="sidebar-periodo" style="padding:0 12px;margin-top:4px;display:none">
@@ -357,45 +481,129 @@ body.theme-gray::before,body.theme-light::before{background-image:none;}
 <main class="main">
   <div class="topbar">
     <div class="topbar-title" id="topbar-title">Dashboard</div>
-    <div class="mode-toggle">
-      <button class="mode-btn active-cacd" id="btn-cacd" onclick="setModo('cacd')">CACD</button>
-      <button class="mode-btn" id="btn-dir" onclick="setModo('dir')">Direito</button>
-    </div>
+    <div class="prog-toggle" id="prog-toggle"></div>
     <div id="sync-status"></div>
-    <div class="topbar-sub" id="topbar-sub">Modo: <strong style="color:var(--cacd)">CACD 2027</strong></div>
+    <div class="topbar-sub" id="topbar-sub"></div>
   </div>
 
   <div class="content">
 
     <!-- DASHBOARD -->
     <div class="panel active" id="panel-dashboard">
-      <div class="stats-row">
-        <div class="stat-card stat-cacd"><div class="stat-num" id="stat-historinhas">0</div><div class="stat-label">Historinhas</div></div>
-        <div class="stat-card stat-dir"><div class="stat-num" id="stat-questoes">0</div><div class="stat-label">Questões respondidas</div></div>
-        <div class="stat-card stat-green"><div class="stat-num" id="stat-acertos">—</div><div class="stat-label">Taxa de acerto</div></div>
-        <div class="stat-card"><div class="stat-num" id="stat-redacoes">0</div><div class="stat-label">Redações</div></div>
+
+      <!-- DASHBOARD CACD -->
+      <div id="dash-cacd">
+        <div class="stats-row">
+          <div class="stat-card stat-cacd"><div class="stat-num" id="stat-historinhas">0</div><div class="stat-label">Historinhas CACD</div></div>
+          <div class="stat-card stat-cacd"><div class="stat-num" id="stat-questoes">0</div><div class="stat-label">Simulados respondidos</div></div>
+          <div class="stat-card stat-green"><div class="stat-num" id="stat-acertos">—</div><div class="stat-label">Taxa de acerto</div></div>
+          <div class="stat-card stat-cacd"><div class="stat-num" id="stat-redacoes">0</div><div class="stat-label">Redações</div></div>
+        </div>
+
+        <div class="section-title">Matérias CACD cadastradas</div>
+        <div id="dash-cacd-materias" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px"></div>
+
+        <div class="section-title">Acesso rápido</div>
+        <div class="quick-actions">
+          <div class="qa-card cacd" onclick="goToNamed('historinha','cacd')">
+            <div class="qa-icon">✦</div>
+            <div class="qa-title">Gerar historinha</div>
+            <div class="qa-desc">Narrativa para memorizar conteúdo diplomático</div>
+          </div>
+          <div class="qa-card cacd" onclick="goToNamed('simulado','cacd')">
+            <div class="qa-icon">◈</div>
+            <div class="qa-title">Simulado CACD</div>
+            <div class="qa-desc">Questões no padrão CACD com armadilhas</div>
+          </div>
+          <div class="qa-card cacd" onclick="goTo('redacao',null)">
+            <div class="qa-icon">✎</div>
+            <div class="qa-title">Redação dissertativa</div>
+            <div class="qa-desc">Tema + correção nos critérios do CACD</div>
+          </div>
+          <div class="qa-card cacd" onclick="goTo('material',null)">
+            <div class="qa-icon">⊕</div>
+            <div class="qa-title">Material de estudo</div>
+            <div class="qa-desc">Gerar flashcards ou questões de PDF/texto</div>
+          </div>
+        </div>
+
+        <div class="section-title">Histórico recente — CACD</div>
+        <div id="dash-hist-cacd" style="display:flex;flex-direction:column;gap:7px"></div>
+        <div id="dash-hist-cacd-vazio" style="font-size:13px;color:var(--muted);display:none">Nenhuma atividade CACD ainda.</div>
       </div>
-      <div class="section-title">Acesso rápido</div>
-      <div class="quick-actions">
-        <div class="qa-card cacd" onclick="goToNamed('historinha','cacd')"><div class="qa-icon">✦</div><div class="qa-title">Historinha CACD</div><div class="qa-desc">Narrativas para memorizar conteúdo diplomático</div></div>
-        <div class="qa-card dir" onclick="goToNamed('historinha','dir')"><div class="qa-icon">⚖</div><div class="qa-title">Historinha Direito</div><div class="qa-desc">Penal, Civil, MARC e suas matérias cadastradas</div></div>
-        <div class="qa-card cacd" onclick="goToNamed('simulado','cacd')"><div class="qa-icon">◈</div><div class="qa-title">Simulado CACD</div><div class="qa-desc">Questões no padrão CACD com gabarito comentado</div></div>
-        <div class="qa-card dir" onclick="goTo('materias',null)"><div class="qa-icon">☰</div><div class="qa-title">Gerenciar Matérias</div><div class="qa-desc">Adicionar matérias, tópicos por N1/N2/N3</div></div>
+
+      <!-- DASHBOARD DIREITO -->
+      <div id="dash-dir" style="display:none">
+        <!-- Período ativo -->
+        <div id="dash-periodo-card" style="margin-bottom:20px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;display:flex;align-items:center;gap:16px">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(110,155,200,0.15);border:1px solid var(--dir);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:20px;font-weight:800;color:var(--dir);flex-shrink:0" id="dash-periodo-num">—</div>
+          <div style="flex:1">
+            <div style="font-family:var(--font-head);font-size:15px;font-weight:700" id="dash-periodo-nome">Nenhum período ativo</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px" id="dash-periodo-sub">Vá em Matérias & Períodos para definir o período atual</div>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="goTo('materias',null);switchMatTab('periodos')">Gerenciar</button>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card stat-dir"><div class="stat-num" id="stat-hist-dir">0</div><div class="stat-label">Historinhas Direito</div></div>
+          <div class="stat-card stat-dir"><div class="stat-num" id="stat-sim-dir">0</div><div class="stat-label">Simulados respondidos</div></div>
+          <div class="stat-card stat-green"><div class="stat-num" id="stat-acerto-dir">—</div><div class="stat-label">Taxa de acerto</div></div>
+          <div class="stat-card stat-dir"><div class="stat-num" id="stat-mat-dir">0</div><div class="stat-label">Matérias no período</div></div>
+        </div>
+
+        <div class="section-title">Matérias do período ativo</div>
+        <div id="dash-dir-materias" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px">
+          <div style="font-size:13px;color:var(--muted)">Nenhuma matéria vinculada ao período ativo.</div>
+        </div>
+
+        <div class="section-title">Acesso rápido</div>
+        <div class="quick-actions">
+          <div class="qa-card dir" onclick="goToNamed('historinha','dir')">
+            <div class="qa-icon">⚖</div>
+            <div class="qa-title">Gerar historinha</div>
+            <div class="qa-desc">Narrativa para memorizar doutrina e jurisprudência</div>
+          </div>
+          <div class="qa-card dir" onclick="goToNamed('simulado','dir')">
+            <div class="qa-icon">◈</div>
+            <div class="qa-title">Simulado Direito</div>
+            <div class="qa-desc">Questões filtradas pelo período ativo</div>
+          </div>
+          <div class="qa-card dir" onclick="goTo('material',null)">
+            <div class="qa-icon">⊕</div>
+            <div class="qa-title">Material de estudo</div>
+            <div class="qa-desc">Gerar flashcards de PDF ou texto da aula</div>
+          </div>
+          <div class="qa-card dir" onclick="goTo('materias',null);switchMatTab('dir')">
+            <div class="qa-icon">☰</div>
+            <div class="qa-title">Gerenciar matérias</div>
+            <div class="qa-desc">Adicionar cadeiras e tópicos N1/N2/N3</div>
+          </div>
+        </div>
+
+        <div class="section-title">Histórico recente — Direito</div>
+        <div id="dash-hist-dir" style="display:flex;flex-direction:column;gap:7px"></div>
+        <div id="dash-hist-dir-vazio" style="font-size:13px;color:var(--muted);display:none">Nenhuma atividade de Direito ainda.</div>
       </div>
-      <div id="no-key-warning" class="no-key-warn" style="display:none">
+
+      <div id="no-key-warning" class="no-key-warn" style="display:none;margin-top:20px">
         <div style="font-weight:500;color:var(--cacd);margin-bottom:4px">⚠ Configure sua chave de API</div>
         <div style="font-size:13px;color:var(--muted)">Sem a chave Anthropic as funções de IA não funcionam. Clique em <strong style="color:var(--text)">Configurar API</strong> no rodapé do menu.</div>
       </div>
     </div>
 
+    <!-- PROGRAMAS DE ESTUDO -->
+    <div class="panel" id="panel-programas">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="font-size:13px;color:var(--muted)">Cada programa tem suas próprias matérias e regras de estudo.</div>
+        <button class="btn btn-primary-cacd btn-sm" onclick="abrirModalPrograma()">+ Novo programa</button>
+      </div>
+      <div id="prog-list-container"></div>
+    </div>
+
     <!-- MATÉRIAS & PERÍODOS (CRUD) -->
     <div class="panel" id="panel-materias">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-        <div class="tabs" style="margin-bottom:0">
-          <button class="tab active" id="tab-mat-cacd"    onclick="switchMatTab('cacd')">CACD</button>
-          <button class="tab"        id="tab-mat-dir"     onclick="switchMatTab('dir')">Direito</button>
-          <button class="tab"        id="tab-mat-periodos" onclick="switchMatTab('periodos')">Períodos</button>
-        </div>
+        <div class="tabs" id="mat-tabs-container" style="margin-bottom:0"></div>
         <button class="btn btn-primary-cacd btn-sm" id="btn-nova-materia" onclick="abrirModalMateria()">+ Nova matéria</button>
       </div>
 
@@ -466,16 +674,13 @@ body.theme-gray::before,body.theme-light::before{background-image:none;}
 
     <!-- HISTORINHA -->
     <div class="panel" id="panel-historinha">
-      <div class="tabs">
-        <button class="tab active" id="tab-hist-cacd" onclick="switchHistTab('cacd')">CACD</button>
-        <button class="tab" id="tab-hist-dir" onclick="switchHistTab('dir')">Direito</button>
-      </div>
+      <!-- CONCURSO (sem unidades) -->
       <div id="hist-cacd">
         <div class="form-group">
           <label class="form-label">Matéria</label>
           <select class="form-select" id="cacd-materia"></select>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="hist-unidade-group" style="display:none">
           <label class="form-label">Unidade</label>
           <select class="form-select" id="cacd-unidade">
             <option value="N1">N1</option>
@@ -498,6 +703,7 @@ body.theme-gray::before,body.theme-light::before{background-image:none;}
         </div>
         <button class="btn btn-primary-cacd" onclick="gerarHistorinha('cacd')" id="btn-hist-cacd">✦ Gerar historinha</button>
       </div>
+      <!-- DIREITO -->
       <div id="hist-dir" style="display:none">
         <div class="form-group">
           <label class="form-label">Matéria</label>
@@ -541,10 +747,6 @@ body.theme-gray::before,body.theme-light::before{background-image:none;}
 
     <!-- SIMULADO -->
     <div class="panel" id="panel-simulado">
-      <div class="tabs">
-        <button class="tab active" id="tab-sim-cacd" onclick="switchSimTab('cacd')">CACD</button>
-        <button class="tab" id="tab-sim-dir" onclick="switchSimTab('dir')">Direito</button>
-      </div>
       <div id="sim-config">
         <div class="form-group">
           <label class="form-label">Matéria</label>
@@ -571,7 +773,7 @@ body.theme-gray::before,body.theme-light::before{background-image:none;}
             <option value="5">5 questões</option>
           </select>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="sim-armadilha-group">
           <label class="form-label">Armadilha CACD</label>
           <select class="form-select" id="sim-armadilha">
             <option value="nenhuma">Nenhuma</option>
@@ -752,17 +954,139 @@ body.theme-gray::before,body.theme-light::before{background-image:none;}
 
     </div>
 
-    <!-- PROGRESSO -->
+
+    <!-- BARALHOS -->
+    <div class="panel" id="panel-baralhos">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="font-size:13px;color:var(--muted)">Flashcards gerados ficam aqui para revisão com algoritmo SM-2.</div>
+        <button class="btn btn-primary-cacd btn-sm" onclick="goTo('material',null)">+ Novo baralho</button>
+      </div>
+      <div id="deck-list-container"></div>
+    </div>
+
+    <!-- REVISÃO SM-2 -->
+    <div class="panel" id="panel-revisao">
+      <div id="rev-deck-select" style="margin-bottom:16px">
+        <div class="form-group">
+          <label class="form-label">Baralho para revisar</label>
+          <select class="form-select" id="rev-deck-sel" onchange="carregarRevisao()"></select>
+        </div>
+        <div class="xp-bar-wrap">
+          <div class="xp-bar-top">
+            <span style="font-size:13px;font-weight:600" id="xp-display">0 XP</span>
+            <span class="xp-level-badge lvl-bronze" id="level-badge">🥉 Bronze</span>
+          </div>
+          <div class="xp-bar"><div class="xp-bar-fill" id="xp-bar-fill" style="width:0%;background:var(--cacd)"></div></div>
+          <div style="font-size:11px;color:var(--muted);margin-top:5px" id="xp-next-label">0 / 100 XP para Prata</div>
+        </div>
+        <div class="streak-row">
+          <div class="streak-card"><div class="streak-num" id="streak-num" style="color:var(--cacd)">0</div><div class="streak-label">🔥 Streak (dias)</div></div>
+          <div class="streak-card"><div class="streak-num" id="cards-hoje" style="color:var(--dir)">0</div><div class="streak-label">📚 Cards hoje</div></div>
+        </div>
+        <button class="btn btn-primary-cacd" style="width:100%" onclick="iniciarRevisao()" id="btn-iniciar-rev">▶ Iniciar revisão</button>
+      </div>
+
+      <div id="rev-area" style="display:none">
+        <div class="fc-progress-bar"><div class="fc-progress-fill" id="rev-prog-fill" style="width:0%"></div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <span id="rev-counter" style="font-size:12px;color:var(--muted)">0 / 0</span>
+          <span class="fc-state-badge state-novo" id="rev-state-badge">Novo</span>
+        </div>
+        <div class="fc-card-wrap" onclick="virarCard()">
+          <div class="fc-card" id="rev-card">
+            <div class="fc-face fc-front">
+              <div class="fc-face-label">Pergunta — toque para ver a resposta</div>
+              <div class="fc-face-text" id="rev-pergunta">—</div>
+            </div>
+            <div class="fc-face fc-back">
+              <div class="fc-face-label">Resposta</div>
+              <div class="fc-face-text" id="rev-resposta">—</div>
+            </div>
+          </div>
+        </div>
+        <div id="rev-btn-area" style="display:none;margin-top:4px">
+          <div class="fc-answer-btns">
+            <button class="fc-btn fc-btn-errei" onclick="avaliarCard(0)">✗ Errei<span class="fc-btn-sub">Aparece de novo</span></button>
+            <button class="fc-btn fc-btn-quase" onclick="avaliarCard(1)">~ Quase<span class="fc-btn-sub">Amanhã</span></button>
+            <button class="fc-btn fc-btn-acertei" onclick="avaliarCard(2)">✓ Acertei<span class="fc-btn-sub">Em alguns dias</span></button>
+          </div>
+        </div>
+      </div>
+      <div id="rev-fim" style="display:none;text-align:center;padding:32px 20px">
+        <div style="font-size:36px;margin-bottom:10px">🎉</div>
+        <div style="font-family:var(--font-head);font-size:16px;font-weight:700;margin-bottom:6px">Sessão concluída!</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:18px" id="rev-fim-sub"></div>
+        <div style="display:flex;gap:8px;justify-content:center">
+          <button class="btn btn-primary-cacd" onclick="iniciarRevisao()">Revisar novamente</button>
+          <button class="btn btn-secondary" onclick="goTo('baralhos',null)">Ver baralhos</button>
+        </div>
+      </div>
+      <div id="rev-vazio" style="display:none;text-align:center;padding:32px 20px">
+        <div style="font-size:36px;margin-bottom:10px">✦</div>
+        <div style="font-family:var(--font-head);font-size:15px;font-weight:700;margin-bottom:6px">Nenhum card para revisar agora</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:18px">Todos em dia! Volte amanhã ou gere novos em Material de Estudo.</div>
+        <button class="btn btn-secondary" onclick="goTo('material',null)">Gerar novos cards</button>
+      </div>
+
+      <!-- QUIZ -->
+      <div style="margin-top:24px;border-top:1px solid var(--border);padding-top:20px" id="quiz-section">
+        <div class="section-title">Quiz do baralho</div>
+        <div class="quiz-tipo-sel">
+          <div class="quiz-tipo-card selected" id="qtipo-mc" onclick="setQuizTipo('mc')">
+            <div class="quiz-tipo-icon">☰</div>
+            <div class="quiz-tipo-label">Múltipla escolha</div>
+            <div class="quiz-tipo-desc">4 alternativas, 1 correta</div>
+          </div>
+          <div class="quiz-tipo-card" id="qtipo-vf" onclick="setQuizTipo('vf')">
+            <div class="quiz-tipo-icon">⊕</div>
+            <div class="quiz-tipo-label">Verdadeiro ou Falso</div>
+            <div class="quiz-tipo-desc">Avalie a afirmação</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Quantidade</label>
+          <select class="form-select" id="quiz-qtd" style="width:160px">
+            <option value="10" selected>10 perguntas</option>
+            <option value="25">25 perguntas</option>
+            <option value="50">50 perguntas</option>
+          </select>
+        </div>
+        <button class="btn btn-primary-cacd" onclick="iniciarQuiz()">▶ Iniciar quiz</button>
+        <div id="quiz-area" style="display:none;margin-top:18px"></div>
+        <div id="quiz-score-area" style="display:none;margin-top:18px"></div>
+      </div>
+    </div>
+
+    <!-- PROGRESSO AVANÇADO -->
     <div class="panel" id="panel-progresso">
-      <div class="progress-grid">
-        <div class="prog-card">
-          <div class="prog-card-title" style="color:var(--cacd)">📋 CACD</div>
-          <div id="prog-cacd-list"></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px">
+        <div class="stat-card"><div class="stat-num" id="prog-streak" style="color:var(--cacd)">0</div><div class="stat-label">🔥 Streak</div></div>
+        <div class="stat-card"><div class="stat-num" id="prog-xp" style="color:var(--cacd)">0</div><div class="stat-label">⚡ XP total</div></div>
+        <div class="stat-card"><div class="stat-num" id="prog-level-disp" style="color:var(--cacd);font-size:16px">Bronze</div><div class="stat-label">🏆 Nível</div></div>
+      </div>
+      <div class="section-title">Domínio geral dos flashcards</div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px">
+          <span>Novo: <strong id="dom-novo-n">0</strong></span>
+          <span style="color:var(--dir)">Aprendendo: <strong id="dom-aprendendo-n">0</strong></span>
+          <span style="color:var(--green)">Dominado: <strong id="dom-dominado-n">0</strong></span>
         </div>
-        <div class="prog-card">
-          <div class="prog-card-title" style="color:var(--dir)">⚖ Direito</div>
-          <div id="prog-dir-list"></div>
+        <div class="dominio-bar">
+          <div class="dominio-seg seg-novo" id="dom-novo-bar" style="width:33%"></div>
+          <div class="dominio-seg seg-aprendendo" id="dom-aprendendo-bar" style="width:33%"></div>
+          <div class="dominio-seg seg-dominado" id="dom-dominado-bar" style="width:34%"></div>
         </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:8px" id="dom-pct-label">Nenhum flashcard ainda.</div>
+      </div>
+      <div class="section-title">Matérias por prioridade (menos dominadas primeiro)</div>
+      <div id="prior-list" style="margin-bottom:24px"></div>
+      <div class="section-title">Consistência — últimos 30 dias</div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:24px">
+        <div style="display:flex;gap:12px;font-size:11px;color:var(--muted);margin-bottom:8px">
+          <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--bg3);margin-right:4px;vertical-align:middle"></span>Sem estudo</span>
+          <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--green);margin-right:4px;vertical-align:middle"></span>Estudou</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px" id="consist-grid"></div>
       </div>
       <div class="section-title">Histórico recente</div>
       <div id="historico-list" style="display:flex;flex-direction:column;gap:7px"></div>
@@ -777,17 +1101,14 @@ body.theme-gray::before,body.theme-light::before{background-image:none;}
 <div class="modal-overlay" id="modal-materia">
   <div class="modal">
     <div class="modal-title" id="modal-mat-title">Nova matéria</div>
-    <div class="modal-sub">Você poderá adicionar tópicos por unidade depois.</div>
+    <div class="modal-sub">Você poderá adicionar tópicos depois.</div>
     <div class="form-group">
       <label class="form-label">Nome da matéria</label>
-      <input class="form-input" id="mat-nome-input" placeholder="Ex: Direito Penal — Crimes em Espécie"/>
+      <input class="form-input" id="mat-nome-input" placeholder="Ex: Direito Internacional Público"/>
     </div>
     <div class="form-group">
-      <label class="form-label">Frente</label>
-      <select class="form-select" id="mat-frente-input" onchange="togglePeriodoFieldModal()">
-        <option value="cacd">CACD</option>
-        <option value="dir">Direito</option>
-      </select>
+      <label class="form-label">Programa</label>
+      <select class="form-select" id="mat-frente-input" onchange="togglePeriodoFieldModal()"></select>
     </div>
     <div class="form-group" id="mat-periodo-group" style="display:none">
       <label class="form-label">Período <span style="font-weight:400;text-transform:none">(opcional)</span></label>
@@ -798,6 +1119,52 @@ body.theme-gray::before,body.theme-light::before{background-image:none;}
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="fecharModalMateria()">Cancelar</button>
       <button class="btn btn-primary-cacd" onclick="salvarMateria()" id="btn-salvar-mat">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PROGRAMA -->
+<div class="modal-overlay" id="modal-programa">
+  <div class="modal">
+    <div class="modal-title" id="modal-prog-title">Novo programa</div>
+    <div class="modal-sub">Defina o tipo para o app adaptar os campos automaticamente.</div>
+    <div class="prog-type-grid">
+      <div class="prog-type-card selected" id="ptype-concurso" onclick="selecionarTipoPrograma('concurso')">
+        <div class="prog-type-icon">🏆</div>
+        <div class="prog-type-label">Concurso</div>
+        <div class="prog-type-desc">CACD, TRT, OAB, Delegado…</div>
+      </div>
+      <div class="prog-type-card" id="ptype-graduacao" onclick="selecionarTipoPrograma('graduacao')">
+        <div class="prog-type-icon">🎓</div>
+        <div class="prog-type-label">Graduação</div>
+        <div class="prog-type-desc">Com períodos e N1/N2/N3</div>
+      </div>
+      <div class="prog-type-card" id="ptype-posgraduacao" onclick="selecionarTipoPrograma('posgraduacao')">
+        <div class="prog-type-icon">📚</div>
+        <div class="prog-type-label">Pós-graduação</div>
+        <div class="prog-type-desc">Especialização, MBA, mestrado</div>
+      </div>
+      <div class="prog-type-card" id="ptype-livre" onclick="selecionarTipoPrograma('livre')">
+        <div class="prog-type-icon">✦</div>
+        <div class="prog-type-label">Estudo livre</div>
+        <div class="prog-type-desc">Idioma, técnico, pessoal…</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Nome do programa</label>
+      <input class="form-input" id="prog-nome-input" placeholder="Ex: CACD 2027, Direito — Nova Roma…"/>
+    </div>
+    <div class="form-group" id="prog-instituicao-group">
+      <label class="form-label">Instituição <span style="font-weight:400;text-transform:none">(opcional)</span></label>
+      <input class="form-input" id="prog-inst-input" placeholder="Ex: CESPE, Faculdade Nova Roma…"/>
+    </div>
+    <div class="form-group" id="prog-ano-group">
+      <label class="form-label">Ano / Meta</label>
+      <input class="form-input" id="prog-ano-input" placeholder="Ex: 2027, 2025.1…"/>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="fecharModalPrograma()">Cancelar</button>
+      <button class="btn btn-primary-cacd" onclick="salvarPrograma()" id="btn-salvar-prog">Salvar</button>
     </div>
   </div>
 </div>
@@ -871,44 +1238,71 @@ body.theme-gray::before,body.theme-light::before{background-image:none;}
 // ============================================================
 // DADOS PADRÃO
 // ============================================================
+// ============================================================
+// PROGRAMAS DE ESTUDO — dados padrão
+// ============================================================
+const PROGRAMAS_DEFAULT = [
+  { id:'prog-cacd', nome:'CACD 2027', tipo:'concurso', instituicao:'CESPE/UnB', ano:'2027', ativo:true },
+  { id:'prog-dir',  nome:'Direito — Nova Roma', tipo:'graduacao', instituicao:'Faculdade Nova Roma', ano:'4º Período', ativo:false },
+];
+
 const MATERIAS_DEFAULT = [
-  {id:'m1',nome:'Direito Internacional Público',frente:'cacd',topicos:{n1:['Fontes do DI','Sujeitos de DI','Tratados internacionais'],n2:['Responsabilidade internacional','Solução pacífica de controvérsias'],n3:['Direito do mar','Direito humanitário','Organismos internacionais']}},
-  {id:'m2',nome:'Direito Internacional Privado',frente:'cacd',topicos:{n1:['LINDB','Conflito de leis no espaço'],n2:['Homologação de sentença estrangeira'],n3:['Cooperação jurídica internacional']}},
-  {id:'m3',nome:'Economia',frente:'cacd',topicos:{n1:['Microeconomia básica','Oferta e demanda'],n2:['Macroeconomia','Política fiscal e monetária'],n3:['Comércio internacional','OMC','Finanças internacionais']}},
-  {id:'m4',nome:'História do Brasil',frente:'cacd',topicos:{n1:['Período colonial','Independência'],n2:['Império','República Velha'],n3:['Era Vargas ao presente','Política externa brasileira']}},
-  {id:'m5',nome:'Política Internacional',frente:'cacd',topicos:{n1:['Realismo e liberalismo','Conceitos de poder'],n2:['Ordem mundial pós-1945','Guerra Fria'],n3:['Ordem atual','Temas globais']}},
-  {id:'m6',nome:'Direito Penal — Crimes em Espécie',frente:'dir',topicos:{n1:['Crimes contra a pessoa','Homicídio','Lesão corporal'],n2:['Crimes contra o patrimônio','Furto','Roubo','Estelionato'],n3:['Crimes contra a administração','Crimes digitais','Lei Maria da Penha']}},
-  {id:'m7',nome:'Direito Civil — Contratos em Espécie',frente:'dir',topicos:{n1:['Compra e venda','Doação'],n2:['Locação','Prestação de serviço','Empreitada'],n3:['Seguro','Mandato','Fiança','Responsabilidade civil']}},
-  {id:'m8',nome:'MARC — Mediação e Arbitragem',frente:'dir',topicos:{n1:['Conceito e princípios da mediação','Lei de Mediação'],n2:['Arbitragem — Lei 9.307/96','Procedimento arbitral'],n3:['Negociação','Conciliação','MARC nos contratos']}},
+  {id:'m1',nome:'Direito Internacional Público', programaId:'prog-cacd', topicos:{n1:['Fontes do DI','Sujeitos de DI','Tratados internacionais'],n2:['Responsabilidade internacional','Solução pacífica de controvérsias'],n3:['Direito do mar','Direito humanitário','Organismos internacionais']}},
+  {id:'m2',nome:'Direito Internacional Privado', programaId:'prog-cacd', topicos:{n1:['LINDB','Conflito de leis no espaço'],n2:['Homologação de sentença estrangeira'],n3:['Cooperação jurídica internacional']}},
+  {id:'m3',nome:'Economia',                       programaId:'prog-cacd', topicos:{n1:['Microeconomia básica','Oferta e demanda'],n2:['Macroeconomia','Política fiscal e monetária'],n3:['Comércio internacional','OMC']}},
+  {id:'m4',nome:'História do Brasil',             programaId:'prog-cacd', topicos:{n1:['Período colonial','Independência'],n2:['Império','República Velha'],n3:['Era Vargas ao presente','Política externa brasileira']}},
+  {id:'m5',nome:'Política Internacional',         programaId:'prog-cacd', topicos:{n1:['Realismo e liberalismo','Conceitos de poder'],n2:['Ordem mundial pós-1945','Guerra Fria'],n3:['Ordem atual','Temas globais']}},
+  {id:'m6',nome:'Direito Penal — Crimes em Espécie',  programaId:'prog-dir', periodoId:null, topicos:{n1:['Crimes contra a pessoa','Homicídio','Lesão corporal'],n2:['Crimes contra o patrimônio','Furto','Roubo','Estelionato'],n3:['Crimes contra a administração','Crimes digitais']}},
+  {id:'m7',nome:'Direito Civil — Contratos em Espécie',programaId:'prog-dir', periodoId:null, topicos:{n1:['Compra e venda','Doação'],n2:['Locação','Prestação de serviço','Empreitada'],n3:['Seguro','Mandato','Fiança']}},
+  {id:'m8',nome:'MARC — Mediação e Arbitragem',    programaId:'prog-dir', periodoId:null, topicos:{n1:['Conceito e princípios da mediação','Lei de Mediação'],n2:['Arbitragem — Lei 9.307/96','Procedimento arbitral'],n3:['Negociação','Conciliação','MARC nos contratos']}},
 ];
 
 // ============================================================
-// ESTADO
+// ESTADO PRINCIPAL
 // ============================================================
-let modo = 'cacd';
-let matTabAtual = 'cacd';
-let simTabAtual = 'cacd';
+let programas = JSON.parse(localStorage.getItem('estuda_programas') || 'null') || PROGRAMAS_DEFAULT;
+let programaAtivoId = localStorage.getItem('estuda_programa_ativo') || 'prog-cacd';
+let modo = programaAtivoId; // modo agora é o ID do programa ativo
+let matTabAtual = programaAtivoId;
+let simTabAtual = programaAtivoId;
 let unidadeAtual = 'n1';
 let materiaSelecionadaId = null;
 let editandoId = null;
+let editandoProgramaId = null;
+let tipoProgramaSelecionado = 'concurso';
 let apiKey = localStorage.getItem('estuda_api_key') || '';
 let stats = JSON.parse(localStorage.getItem('estuda_stats') || '{"historinhas":0,"questoes":0,"acertos":0,"tentativas":0,"redacoes":0}');
 let historico = JSON.parse(localStorage.getItem('estuda_historico') || '[]');
 let materias = JSON.parse(localStorage.getItem('estuda_materias') || 'null') || MATERIAS_DEFAULT;
 let simQuestoes = [], simRespostas = {}, simGabarito = {};
 
+// --- Helpers de programa ---
+function salvarProgramas() {
+  localStorage.setItem('estuda_programas', JSON.stringify(programas));
+  localStorage.setItem('estuda_programa_ativo', programaAtivoId);
+}
+function getPrograma(id) { return programas.find(p => p.id === id); }
+function getProgramaAtivo() { return getPrograma(programaAtivoId) || programas[0]; }
+function isConcurso(prog) { return !prog || prog.tipo === 'concurso' || prog.tipo === 'livre'; }
+function hasUnidades(prog) { return prog && (prog.tipo === 'graduacao' || prog.tipo === 'posgraduacao'); }
+
+// --- Helpers de matéria ---
 function salvarMaterias() { localStorage.setItem('estuda_materias', JSON.stringify(materias)); }
-function getMaterias(frente) {
-  let lista = materias.filter(m => m.frente === frente);
-  // Filtrar por período ativo se for Direito
-  if (frente === 'dir' && periodoAtivo) {
+function getMaterias(progId) {
+  const id = progId || programaAtivoId;
+  let lista = materias.filter(m => m.programaId === id || m.frente === id);
+  // Filtrar por período se programa com unidades
+  const prog = getPrograma(id);
+  if (hasUnidades(prog) && periodoAtivo) {
     const comPeriodo = lista.filter(m => m.periodoId === periodoAtivo);
-    // Se existem matérias vinculadas ao período, mostrar só elas
     if (comPeriodo.length) return comPeriodo;
   }
   return lista;
 }
-function getTodasMaterias(frente) { return materias.filter(m => m.frente === frente); }
+function getTodasMaterias(progId) {
+  const id = progId || programaAtivoId;
+  return materias.filter(m => m.programaId === id || m.frente === id);
+}
 function getMateria(id) { return materias.find(m => m.id === id); }
 function uid() { return 'm' + Date.now() + Math.random().toString(36).slice(2,6); }
 
@@ -923,9 +1317,119 @@ function salvarPeriodosLocal() {
   localStorage.setItem('estuda_periodos', JSON.stringify(periodos));
   localStorage.setItem('estuda_periodo_ativo', periodoAtivo || '');
 }
-
 function getPeriodo(id) { return periodos.find(p => p.id === id); }
 function getPeriodoAtivo() { return periodos.find(p => p.id === periodoAtivo); }
+
+// ============================================================
+// CRUD DE PROGRAMAS
+// ============================================================
+const TIPO_ICONE = { concurso:'🏆', graduacao:'🎓', posgraduacao:'📚', livre:'✦' };
+const TIPO_COR   = { concurso:'var(--cacd)', graduacao:'var(--dir)', posgraduacao:'var(--dir)', livre:'var(--green)' };
+
+function renderToggleProgramas() {
+  const el = document.getElementById('prog-toggle');
+  if (!el) return;
+  el.innerHTML = programas.map(p => {
+    const ativo = p.id === programaAtivoId;
+    return `<button class="prog-btn ${p.tipo}${ativo?' active':''}" onclick="setModo('${p.id}')">${p.nome}</button>`;
+  }).join('') + `<button class="prog-add-btn" onclick="abrirModalPrograma()" title="Novo programa">+</button>`;
+  // Logo sub
+  const prog = getProgramaAtivo();
+  if (prog && document.getElementById('logo-sub')) {
+    document.getElementById('logo-sub').textContent = prog.nome;
+  }
+  // Topbar sub
+  const sub = document.getElementById('topbar-sub');
+  if (sub && prog) {
+    const cor = TIPO_COR[prog.tipo] || 'var(--cacd)';
+    sub.innerHTML = `<strong style="color:${cor}">${TIPO_ICONE[prog.tipo]||''} ${prog.nome}</strong>`;
+  }
+}
+
+function renderListaProgramas() {
+  const el = document.getElementById('prog-list-container');
+  if (!el) return;
+  if (!programas.length) {
+    el.innerHTML = '<div style="text-align:center;padding:32px;color:var(--muted)">Nenhum programa cadastrado.</div>';
+    return;
+  }
+  el.innerHTML = programas.map(p => {
+    const qtdMat = materias.filter(m => m.programaId === p.id || m.frente === p.id).length;
+    const ativo = p.id === programaAtivoId;
+    const cor = TIPO_COR[p.tipo] || 'var(--cacd)';
+    return `<div class="prog-item">
+      <div class="prog-item-icon" style="background:${cor}22;border:1px solid ${cor}44">${TIPO_ICONE[p.tipo]||'✦'}</div>
+      <div class="prog-item-info">
+        <div class="prog-item-nome">${p.nome} ${ativo ? '<span class="prog-item-ativo">ativo</span>' : ''}</div>
+        <div class="prog-item-meta">${p.tipo} · ${p.instituicao||''} ${p.ano ? '· '+p.ano : ''} · ${qtdMat} matéria${qtdMat!==1?'s':''}</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0">
+        ${!ativo ? `<button class="btn btn-secondary btn-sm" onclick="setModo('${p.id}')">Ativar</button>` : ''}
+        <button class="btn btn-secondary btn-sm" onclick="abrirModalPrograma('${p.id}')">Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="excluirPrograma('${p.id}')">×</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function abrirModalPrograma(id) {
+  editandoProgramaId = id || null;
+  const p = id ? getPrograma(id) : null;
+  document.getElementById('modal-prog-title').textContent = id ? 'Editar programa' : 'Novo programa';
+  document.getElementById('prog-nome-input').value = p ? p.nome : '';
+  document.getElementById('prog-inst-input').value = p ? (p.instituicao||'') : '';
+  document.getElementById('prog-ano-input').value  = p ? (p.ano||'') : '';
+  selecionarTipoPrograma(p ? p.tipo : 'concurso');
+  document.getElementById('modal-programa').classList.add('visible');
+  setTimeout(() => document.getElementById('prog-nome-input').focus(), 100);
+}
+
+function fecharModalPrograma() { document.getElementById('modal-programa').classList.remove('visible'); }
+
+function selecionarTipoPrograma(tipo) {
+  tipoProgramaSelecionado = tipo;
+  ['concurso','graduacao','posgraduacao','livre'].forEach(t => {
+    document.getElementById('ptype-'+t).classList.toggle('selected', t===tipo);
+  });
+}
+
+function salvarPrograma() {
+  const nome = document.getElementById('prog-nome-input').value.trim();
+  if (!nome) { toast('Informe o nome do programa'); return; }
+  const inst = document.getElementById('prog-inst-input').value.trim();
+  const ano  = document.getElementById('prog-ano-input').value.trim();
+  if (editandoProgramaId) {
+    const p = getPrograma(editandoProgramaId);
+    p.nome = nome; p.tipo = tipoProgramaSelecionado; p.instituicao = inst; p.ano = ano;
+  } else {
+    programas.push({ id: uid(), nome, tipo: tipoProgramaSelecionado, instituicao: inst, ano, ativo: false });
+  }
+  salvarProgramas();
+  renderToggleProgramas();
+  renderListaProgramas();
+  preencherSelectProgramaModal();
+  fecharModalPrograma();
+  toast(editandoProgramaId ? '✓ Programa atualizado' : '✓ Programa criado');
+  editandoProgramaId = null;
+}
+
+function excluirPrograma(id) {
+  if (programas.length <= 1) { toast('Mantenha ao menos um programa'); return; }
+  const p = getPrograma(id);
+  if (!confirm(`Excluir "${p.nome}"? As matérias vinculadas não serão excluídas.`)) return;
+  programas = programas.filter(x => x.id !== id);
+  if (programaAtivoId === id) { programaAtivoId = programas[0].id; modo = programaAtivoId; }
+  salvarProgramas();
+  renderToggleProgramas();
+  renderListaProgramas();
+  preencherSelectProgramaModal();
+}
+
+function preencherSelectProgramaModal() {
+  const sel = document.getElementById('mat-frente-input');
+  if (!sel) return;
+  sel.innerHTML = programas.map(p => `<option value="${p.id}">${p.nome}</option>`).join('');
+}
 
 function ativarPeriodo(id) {
   periodoAtivo = id || null;
@@ -1057,9 +1561,10 @@ function preencherPeriodoSelects() {
 }
 
 function togglePeriodoFieldModal() {
-  const frente = document.getElementById('mat-frente-input').value;
+  const progId = document.getElementById('mat-frente-input').value;
+  const prog = getPrograma(progId);
   const grupo = document.getElementById('mat-periodo-group');
-  if (grupo) grupo.style.display = frente === 'dir' ? 'block' : 'none';
+  if (grupo) grupo.style.display = hasUnidades(prog) ? 'block' : 'none';
 }
 
 // ============================================================
@@ -1077,13 +1582,19 @@ window.onload = () => {
   preencherSelectMaterias();
   atualizarSelectMatMaterial();
   preencherPeriodoSelects();
+  preencherSelectProgramaModal();
+  renderToggleProgramas();
   renderSidebarPeriodo();
+  renderDashboard();
+  renderXP();
+  preencherSelectRevisao();
+  sincronizarPaineisModo();
 };
 
 // ============================================================
 // NAVEGAÇÃO
 // ============================================================
-const TITULOS = {dashboard:'Dashboard',materias:'Matérias & Unidades',historinha:'Historinhas',simulado:'Simulados',redacao:'Redação CACD',material:'Material de Estudo',progresso:'Progresso'};
+const TITULOS = {dashboard:'Dashboard',programas:'Programas de Estudo',materias:'Matérias',historinha:'Historinhas',simulado:'Simulados',redacao:'Redação',material:'Material de Estudo',baralhos:'Baralhos',revisao:'Revisão SM-2',progresso:'Progresso'};
 
 function goTo(panel, el) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -1095,26 +1606,158 @@ function goTo(panel, el) {
     if (found) found.classList.add('active');
   }
   document.getElementById('topbar-title').textContent = TITULOS[panel] || panel;
-  if (panel === 'materias') renderCrudLista();
+  if (panel === 'materias') { renderMatTabs(); renderCrudLista(); }
+  if (panel === 'programas') renderListaProgramas();
   if (panel === 'progresso') renderProgresso();
   if (panel === 'material') atualizarSelectMatMaterial();
+  if (panel === 'dashboard') renderDashboard();
+  if (panel === 'baralhos') renderBaralhos();
+  if (panel === 'revisao') { preencherSelectRevisao(); renderXP(); }
+  if (panel === 'historinha' || panel === 'simulado') sincronizarPaineisModo(modo);
 }
 
-function goToNamed(panel, m) {
-  setModo(m);
+function goToNamed(panel, progId) {
+  if (progId) setModo(progId);
   goTo(panel, null);
-  if (panel === 'historinha') switchHistTab(m);
-  if (panel === 'simulado') switchSimTab(m);
 }
+
+// Compatibilidade — setModo já sincroniza tudo
+function switchHistTab(t) {}
+function switchSimTab(t)  {}
 
 // ============================================================
 // MODO CACD/DIREITO
 // ============================================================
-function setModo(m) {
-  modo = m;
-  document.getElementById('btn-cacd').className = 'mode-btn' + (m==='cacd'?' active-cacd':'');
-  document.getElementById('btn-dir').className = 'mode-btn' + (m==='dir'?' active-dir':'');
-  document.getElementById('topbar-sub').innerHTML = `Modo: <strong style="color:var(--${m})">${m==='cacd'?'CACD 2027':'Direito'}</strong>`;
+function setModo(progId) {
+  programaAtivoId = progId;
+  modo = progId;
+  salvarProgramas();
+  renderToggleProgramas();
+  sincronizarPaineisModo();
+  const dash = document.getElementById('panel-dashboard');
+  if (dash && dash.classList.contains('active')) renderDashboard();
+}
+
+function sincronizarPaineisModo() {
+  const prog = getProgramaAtivo();
+  const comUnidades = hasUnidades(prog);
+  const isConcursoAtual = isConcurso(prog);
+
+  // Historinha — mostrar bloco correto
+  const hcacd = document.getElementById('hist-cacd');
+  const hdir  = document.getElementById('hist-dir');
+  // Usa hist-cacd para todos (é o genérico), hist-dir apenas para graduação/pós com período
+  if (hcacd) hcacd.style.display = 'block';
+  if (hdir)  hdir.style.display  = 'none';
+  // Campo unidade: só para programas com N1/N2/N3
+  const unGrp = document.getElementById('hist-unidade-group');
+  if (unGrp) unGrp.style.display = comUnidades ? 'block' : 'none';
+  // Preencher matérias no select da historinha
+  preencherSelectMaterias();
+  const resHist = document.getElementById('result-historinha');
+  if (resHist) resHist.classList.remove('visible');
+
+  // Simulado
+  preencherSelectSimuladoPorModo();
+  const armGrp = document.getElementById('sim-armadilha-group');
+  if (armGrp) armGrp.style.display = isConcursoAtual ? 'block' : 'none';
+  const btnSim = document.getElementById('btn-simulado');
+  if (btnSim) btnSim.className = 'btn btn-primary-cacd';
+
+  // Sidebar período: só para programas com unidades
+  const sbPeriodo = document.getElementById('sidebar-periodo');
+  if (sbPeriodo) sbPeriodo.style.display = comUnidades ? 'block' : 'none';
+
+  // Matérias: atualizar lista
+  matTabAtual = progId;
+  renderCrudLista && renderCrudLista();
+}
+
+function preencherSelectSimuladoPorModo(id) {
+  const lista = getMaterias(id || programaAtivoId);
+  const sel = document.getElementById('sim-materia');
+  if (sel) sel.innerHTML = lista.length
+    ? lista.map(m => `<option value="${m.id}">${m.nome}</option>`).join('')
+    : '<option value="">Nenhuma matéria cadastrada</option>';
+}
+
+function renderDashboard() {
+  const isCacd = modo === 'cacd';
+  document.getElementById('dash-cacd').style.display = isCacd ? 'block' : 'none';
+  document.getElementById('dash-dir').style.display  = isCacd ? 'none'  : 'block';
+
+  if (isCacd) {
+    // Stats CACD
+    document.getElementById('stat-historinhas').textContent = stats.historinhas;
+    document.getElementById('stat-questoes').textContent    = stats.questoes;
+    document.getElementById('stat-redacoes').textContent    = stats.redacoes;
+    document.getElementById('stat-acertos').textContent     = stats.tentativas > 0
+      ? Math.round(stats.acertos / stats.tentativas * 100) + '%' : '—';
+
+    // Chips de matérias CACD
+    const mCacd = getMaterias('cacd');
+    const chipsCacd = document.getElementById('dash-cacd-materias');
+    chipsCacd.innerHTML = mCacd.length
+      ? mCacd.map(m => `<span style="font-size:12px;padding:4px 12px;border-radius:20px;background:rgba(200,169,110,0.12);border:1px solid rgba(200,169,110,0.25);color:var(--cacd);cursor:pointer" onclick="goToNamed('historinha','cacd')">${m.nome.split('—')[0].trim()}</span>`).join('')
+      : '<span style="font-size:13px;color:var(--muted)">Nenhuma matéria CACD cadastrada.</span>';
+
+    // Histórico filtrado CACD
+    renderHistoricoFiltrado('cacd');
+
+  } else {
+    // Período ativo
+    const p = getPeriodoAtivo();
+    document.getElementById('dash-periodo-num').textContent  = p ? p.numero + 'º' : '—';
+    document.getElementById('dash-periodo-nome').textContent = p
+      ? p.numero + 'º Período' + (p.descricao ? ' — ' + p.descricao : '')
+      : 'Nenhum período ativo';
+    document.getElementById('dash-periodo-sub').textContent = p
+      ? 'Período atual ativo — matérias filtradas abaixo'
+      : 'Vá em Matérias & Períodos para definir o período atual';
+
+    // Matérias do período
+    const mDir = getMaterias('dir');
+    document.getElementById('stat-mat-dir').textContent = mDir.length;
+    const chipsDir = document.getElementById('dash-dir-materias');
+    chipsDir.innerHTML = mDir.length
+      ? mDir.map(m => `<span style="font-size:12px;padding:4px 12px;border-radius:20px;background:rgba(110,155,200,0.12);border:1px solid rgba(110,155,200,0.25);color:var(--dir);cursor:pointer" onclick="goToNamed('historinha','dir')">${m.nome.split('—')[0].trim()}</span>`).join('')
+      : `<span style="font-size:13px;color:var(--muted)">${p ? 'Nenhuma matéria vinculada ao ' + p.numero + 'º Período.' : 'Ative um período para ver as matérias.'}</span>`;
+
+    // Stats Direito (filtrado do histórico)
+    const histDir = historico.filter(h => h.frente === 'Direito' || h.frente === 'dir');
+    const simDir  = histDir.filter(h => h.tipo === 'simulado');
+    document.getElementById('stat-hist-dir').textContent = histDir.filter(h => h.tipo === 'historinha').length;
+    document.getElementById('stat-sim-dir').textContent  = simDir.length;
+    // Taxa de acerto Direito (extrair do detalhe "X/Y acertos")
+    let acDir = 0, totDir = 0;
+    simDir.forEach(h => {
+      const m = (h.detalhe||'').match(/(\d+)\/(\d+)/);
+      if (m) { acDir += parseInt(m[1]); totDir += parseInt(m[2]); }
+    });
+    document.getElementById('stat-acerto-dir').textContent = totDir > 0
+      ? Math.round(acDir / totDir * 100) + '%' : '—';
+
+    // Histórico filtrado Direito
+    renderHistoricoFiltrado('dir');
+  }
+}
+
+function renderHistoricoFiltrado(frente) {
+  const frenteLabel = frente === 'cacd' ? 'CACD' : 'Direito';
+  const lista = historico.filter(h => h.frente === frenteLabel || h.frente === frente).slice(0, 8);
+  const el    = document.getElementById('dash-hist-' + frente);
+  const vazio = document.getElementById('dash-hist-' + frente + '-vazio');
+  const ic    = { historinha:'✦', simulado:'◈', redacao:'✎', material:'⊕' };
+  if (!lista.length) {
+    el.innerHTML = ''; el.style.display = 'none'; vazio.style.display = 'block'; return;
+  }
+  el.style.display = 'flex'; vazio.style.display = 'none';
+  el.innerHTML = lista.map(h => `
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px">
+      <span>${ic[h.tipo]||'·'}</span>
+      <div style="flex:1"><div style="font-size:13px;font-weight:500">${h.detalhe||h.tipo}</div>
+      <div style="font-size:11px;color:var(--muted)">${h.tipo} · ${h.data}</div></div>
+    </div>`).join('');
 }
 
 // ============================================================
@@ -1136,9 +1779,9 @@ function switchSimTab(t) {
 
 function switchMatTab(t) {
   matTabAtual = t;
-  ['cacd','dir','periodos'].forEach(x => {
-    const btn = document.getElementById('tab-mat-'+x);
-    if (btn) btn.classList.toggle('active', x===t);
+  // Atualizar abas — agora são dinâmicas (prog IDs + periodos)
+  document.querySelectorAll('[data-mat-tab]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.matTab === t);
   });
   const isPeriodos = t === 'periodos';
   document.getElementById('mat-periodos-panel').style.display = isPeriodos ? 'block' : 'none';
@@ -1146,8 +1789,9 @@ function switchMatTab(t) {
   document.getElementById('btn-nova-materia').style.display = isPeriodos ? 'none' : 'inline-block';
   if (isPeriodos) { renderPeriodoList(); return; }
   materiaSelecionadaId = null;
-  document.getElementById('btn-nova-materia').className = 'btn btn-sm ' + (t==='cacd'?'btn-primary-cacd':'btn-primary-dir');
-  document.getElementById('crud-list-title').textContent = 'Matérias ' + (t==='cacd'?'CACD':'Direito');
+  const prog = getPrograma(t);
+  document.getElementById('btn-nova-materia').className = 'btn btn-sm btn-primary-cacd';
+  document.getElementById('crud-list-title').textContent = 'Matérias — ' + (prog ? prog.nome : t);
   renderCrudLista();
   renderPeriodoBanner();
   document.getElementById('crud-detail-empty').style.display = 'flex';
@@ -1158,21 +1802,16 @@ function switchMatTab(t) {
 // PREENCHER SELECTS COM MATÉRIAS DO CRUD
 // ============================================================
 function preencherSelectMaterias() {
-  const cacdList = getMaterias('cacd');
-  const dirList = getMaterias('dir');
+  const lista = getMaterias(programaAtivoId);
   const selCacd = document.getElementById('cacd-materia');
-  const selDir = document.getElementById('dir-materia');
-  if (selCacd) selCacd.innerHTML = cacdList.length
-    ? cacdList.map(m=>`<option value="${m.id}">${m.nome}</option>`).join('')
-    : '<option value="">Nenhuma matéria cadastrada</option>';
-  if (selDir) selDir.innerHTML = dirList.length
-    ? dirList.map(m=>`<option value="${m.id}">${m.nome}</option>`).join('')
+  if (selCacd) selCacd.innerHTML = lista.length
+    ? lista.map(m=>`<option value="${m.id}">${m.nome}</option>`).join('')
     : '<option value="">Nenhuma matéria cadastrada</option>';
   preencherSelectSimulado();
 }
 
 function preencherSelectSimulado() {
-  const lista = getMaterias(simTabAtual);
+  const lista = getMaterias(programaAtivoId);
   const sel = document.getElementById('sim-materia');
   if (sel) sel.innerHTML = lista.length
     ? lista.map(m=>`<option value="${m.id}">${m.nome}</option>`).join('')
@@ -1273,22 +1912,33 @@ function removerTopico(idx) {
 // ============================================================
 // CRUD — MODAL NOVA/EDITAR MATÉRIA
 // ============================================================
+function renderMatTabs() {
+  const el = document.getElementById('mat-tabs-container');
+  if (!el) return;
+  const prog = getProgramaAtivo();
+  const comUnidades = hasUnidades(prog);
+  el.innerHTML = programas.map(p => {
+    const ativo = (matTabAtual === p.id) || (matTabAtual === 'cacd' && p.id === 'prog-cacd') || (matTabAtual === 'dir' && p.id === 'prog-dir');
+    return `<button class="tab${ativo?' active':''}" data-mat-tab="${p.id}" onclick="switchMatTab('${p.id}')">${p.nome.split('—')[0].trim()}</button>`;
+  }).join('') + (comUnidades ? `<button class="tab${matTabAtual==='periodos'?' active':''}" data-mat-tab="periodos" onclick="switchMatTab('periodos')">Períodos</button>` : '');
+}
+
 function abrirModalMateria(id) {
   editandoId = id || null;
-  const modal = document.getElementById('modal-materia');
   const m = id ? getMateria(id) : null;
-  const frente = m ? m.frente : matTabAtual === 'periodos' ? 'dir' : matTabAtual;
+  const progId = m ? (m.programaId || m.frente) : (matTabAtual === 'periodos' ? programaAtivoId : matTabAtual);
   document.getElementById('modal-mat-title').textContent = id ? 'Editar matéria' : 'Nova matéria';
   document.getElementById('mat-nome-input').value = m ? m.nome : '';
-  document.getElementById('mat-frente-input').value = frente;
-  document.getElementById('btn-salvar-mat').className = 'btn ' + (frente==='cacd'?'btn-primary-cacd':'btn-primary-dir');
+  preencherSelectProgramaModal();
+  document.getElementById('mat-frente-input').value = progId;
+  document.getElementById('btn-salvar-mat').className = 'btn btn-primary-cacd';
   preencherPeriodoSelects();
-  // Preencher período se Direito
+  const prog = getPrograma(progId);
   const grupoP = document.getElementById('mat-periodo-group');
+  grupoP.style.display = hasUnidades(prog) ? 'block' : 'none';
   const selP = document.getElementById('mat-periodo-input');
-  grupoP.style.display = frente === 'dir' ? 'block' : 'none';
   if (selP && m) selP.value = m.periodoId || '';
-  modal.classList.add('visible');
+  document.getElementById('modal-materia').classList.add('visible');
   setTimeout(() => document.getElementById('mat-nome-input').focus(), 100);
 }
 
@@ -1296,19 +1946,21 @@ function fecharModalMateria() { document.getElementById('modal-materia').classLi
 
 function salvarMateria() {
   const nome = document.getElementById('mat-nome-input').value.trim();
-  const frente = document.getElementById('mat-frente-input').value;
-  const periodoId = frente === 'dir' ? (document.getElementById('mat-periodo-input').value || null) : null;
+  const progId = document.getElementById('mat-frente-input').value;
+  const prog = getPrograma(progId);
+  const periodoId = hasUnidades(prog) ? (document.getElementById('mat-periodo-input').value || null) : null;
   if (!nome) { toast('Informe o nome da matéria'); return; }
   if (editandoId) {
     const m = getMateria(editandoId);
-    m.nome = nome; m.frente = frente; m.periodoId = periodoId;
+    m.nome = nome; m.programaId = progId; m.frente = progId; m.periodoId = periodoId;
   } else {
-    materias.push({ id: uid(), nome, frente, periodoId, topicos: { n1:[], n2:[], n3:[] } });
+    materias.push({ id: uid(), nome, programaId: progId, frente: progId, periodoId, topicos: { n1:[], n2:[], n3:[] } });
   }
   salvarMaterias();
   preencherSelectMaterias();
   fecharModalMateria();
-  matTabAtual = frente === 'cacd' ? 'cacd' : 'dir';
+  matTabAtual = progId;
+  renderMatTabs();
   renderCrudLista();
   renderPeriodoList();
   renderSidebarPeriodo();
@@ -1604,10 +2256,10 @@ function atualizarWordCount(){
 function salvarStats(){localStorage.setItem('estuda_stats',JSON.stringify(stats));renderStats();}
 
 function renderStats(){
-  document.getElementById('stat-historinhas').textContent=stats.historinhas;
-  document.getElementById('stat-questoes').textContent=stats.questoes;
-  document.getElementById('stat-redacoes').textContent=stats.redacoes;
-  document.getElementById('stat-acertos').textContent=stats.tentativas>0?Math.round(stats.acertos/stats.tentativas*100)+'%':'—';
+  // Stats globais (usados internamente)
+  // Dashboard contextual cuida do render visual
+  const dash = document.getElementById('panel-dashboard');
+  if (dash && dash.classList.contains('active')) renderDashboard();
 }
 
 function adicionarHistorico(tipo,frente,detalhe){
@@ -2021,7 +2673,501 @@ function toast(msg,dur=3000){
 }
 
 // ============================================================
-// SUPABASE — AUTH E SYNC
+// SM-2 / XP / STREAK / QUIZ / BARALHOS
+// ============================================================
+
+// --- ESTADO ---
+let gamification = JSON.parse(localStorage.getItem('estuda_gamification') || '{"xp":0,"streak":0,"lastStudyDate":"","cardsHoje":0,"diasEstudados":[]}');
+let baralhos = JSON.parse(localStorage.getItem('estuda_baralhos') || '[]');
+let quizTipo = 'mc';
+let revDeck = null;
+let revFila = [];
+let revIdx = 0;
+let revCardVirado = false;
+let quizQuestoes = [];
+let quizIdx = 0;
+let quizAcertos = 0;
+let quizRespondida = false;
+
+function salvarGamification() { localStorage.setItem('estuda_gamification', JSON.stringify(gamification)); }
+function salvarBaralhos() { localStorage.setItem('estuda_baralhos', JSON.stringify(baralhos)); }
+
+// --- NÍVEIS ---
+const NIVEIS = [
+  { nome:'🥉 Bronze',   min:0,    max:100,  cls:'lvl-bronze' },
+  { nome:'🥈 Prata',    min:100,  max:300,  cls:'lvl-prata'  },
+  { nome:'🥇 Ouro',     min:300,  max:700,  cls:'lvl-ouro'   },
+  { nome:'💎 Diamante', min:700,  max:99999,cls:'lvl-diamante'},
+];
+function getNivel(xp) { return NIVEIS.find(n => xp >= n.min && xp < n.max) || NIVEIS[3]; }
+
+function ganharXP(pts, motivo) {
+  gamification.xp += pts;
+  salvarGamification();
+  renderXP();
+  toast(`+${pts} XP — ${motivo}`);
+}
+
+function renderXP() {
+  const xp = gamification.xp;
+  const nivel = getNivel(xp);
+  const prox = NIVEIS.find(n => n.min > xp) || nivel;
+  const pct = prox.min > nivel.min ? Math.min(100, Math.round((xp - nivel.min) / (prox.min - nivel.min) * 100)) : 100;
+  const els = ['xp-display','xp-bar-fill','level-badge','xp-next-label','prog-xp','prog-level-disp','prog-streak','streak-num','cards-hoje'];
+  if (document.getElementById('xp-display')) {
+    document.getElementById('xp-display').textContent = xp + ' XP';
+    document.getElementById('xp-bar-fill').style.width = pct + '%';
+    document.getElementById('level-badge').textContent = nivel.nome;
+    document.getElementById('level-badge').className = 'xp-level-badge ' + nivel.cls;
+    document.getElementById('xp-next-label').textContent = xp < 700 ? `${xp} / ${prox.min} XP para ${prox.nome}` : 'Nível máximo!';
+  }
+  if (document.getElementById('prog-xp')) {
+    document.getElementById('prog-xp').textContent = xp;
+    document.getElementById('prog-level-disp').textContent = nivel.nome;
+    document.getElementById('prog-streak').textContent = gamification.streak;
+  }
+  if (document.getElementById('streak-num')) {
+    document.getElementById('streak-num').textContent = gamification.streak;
+    document.getElementById('cards-hoje').textContent = gamification.cardsHoje;
+  }
+}
+
+// --- STREAK ---
+function atualizarStreak() {
+  const hoje = new Date().toDateString();
+  const ontem = new Date(Date.now() - 86400000).toDateString();
+  if (gamification.lastStudyDate === hoje) return;
+  if (gamification.lastStudyDate === ontem) {
+    gamification.streak++;
+    if (gamification.streak > 1) ganharXP(20, 'Streak mantido!');
+  } else if (gamification.lastStudyDate !== hoje) {
+    gamification.streak = 1;
+  }
+  gamification.lastStudyDate = hoje;
+  gamification.cardsHoje = 0;
+  // Registrar dia estudado
+  if (!gamification.diasEstudados.includes(hoje)) gamification.diasEstudados.push(hoje);
+  if (gamification.diasEstudados.length > 60) gamification.diasEstudados.shift();
+  salvarGamification();
+}
+
+// ============================================================
+// BARALHOS — CRUD e listagem
+// ============================================================
+function criarBaralho(nome, frente, matId, matNome, cards) {
+  const b = {
+    id: uid(),
+    nome, frente, matId, matNome,
+    cards: cards.map(c => ({
+      id: uid(),
+      pergunta: c.pergunta,
+      resposta: c.resposta,
+      estado: 'novo',    // novo | aprendendo | dominado
+      intervalo: 1,      // dias
+      facilidade: 2.5,   // fator SM-2
+      proxRevisao: new Date().toDateString(),
+      revisoes: 0,
+      acertos: 0,
+      subtopico: c.subtopico || null,
+      revisadoHoje: false,
+    })),
+    criado_em: new Date().toISOString(),
+  };
+  baralhos.push(b);
+  salvarBaralhos();
+  return b;
+}
+
+function getBaralho(id) { return baralhos.find(b => b.id === id); }
+
+function renderBaralhos() {
+  const el = document.getElementById('deck-list-container');
+  if (!el) return;
+  if (!baralhos.length) {
+    el.innerHTML = `<div style="text-align:center;padding:40px;color:var(--muted)">
+      <div style="font-size:32px;margin-bottom:10px">🃏</div>
+      <div style="font-size:14px">Nenhum baralho ainda. Gere flashcards em <strong>Material de Estudo</strong> para criar seu primeiro baralho.</div>
+    </div>`;
+    return;
+  }
+  el.innerHTML = baralhos.map(b => {
+    const total = b.cards.length;
+    const novos = b.cards.filter(c=>c.estado==='novo').length;
+    const aprend = b.cards.filter(c=>c.estado==='aprendendo').length;
+    const domin = b.cards.filter(c=>c.estado==='dominado').length;
+    const pendentes = b.cards.filter(c => c.proxRevisao <= new Date().toDateString()).length;
+    return `<div class="deck-card ${b.frente}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px">
+        <div>
+          <div style="font-family:var(--font-head);font-size:15px;font-weight:700">${b.nome}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">${b.matNome || ''} · ${total} cards</div>
+        </div>
+        ${pendentes > 0 ? `<span style="font-size:11px;padding:3px 9px;border-radius:10px;background:rgba(200,169,110,0.15);color:var(--cacd);font-weight:600;flex-shrink:0">${pendentes} p/ revisar</span>` : '<span style="font-size:11px;color:var(--green);flex-shrink:0">✓ Em dia</span>'}
+      </div>
+      <div class="deck-stats">
+        <div class="deck-stat deck-stat-novo"><div class="deck-stat-num">${novos}</div><div class="deck-stat-label">Novo</div></div>
+        <div class="deck-stat deck-stat-aprendendo"><div class="deck-stat-num">${aprend}</div><div class="deck-stat-label">Aprendendo</div></div>
+        <div class="deck-stat deck-stat-dominado"><div class="deck-stat-num">${domin}</div><div class="deck-stat-label">Dominado</div></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn btn-primary-cacd btn-sm" onclick="abrirRevisaoDeck('${b.id}')">▶ Revisar</button>
+        <button class="btn btn-secondary btn-sm" onclick="abrirQuizDeck('${b.id}')">◈ Quiz</button>
+        <button class="btn btn-danger btn-sm" style="margin-left:auto" onclick="excluirBaralho('${b.id}')">×</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function excluirBaralho(id) {
+  if (!confirm('Excluir este baralho? Os cards e o progresso serão perdidos.')) return;
+  baralhos = baralhos.filter(b => b.id !== id);
+  salvarBaralhos();
+  renderBaralhos();
+  preencherSelectRevisao();
+  toast('Baralho excluído');
+}
+
+function abrirRevisaoDeck(id) {
+  revDeck = getBaralho(id);
+  goTo('revisao', document.querySelector('.nav-item[onclick*="revisao"]'));
+  setTimeout(iniciarRevisao, 100);
+}
+
+function abrirQuizDeck(id) {
+  revDeck = getBaralho(id);
+  goTo('revisao', document.querySelector('.nav-item[onclick*="revisao"]'));
+  // Scroll para quiz
+  setTimeout(() => document.getElementById('quiz-section').scrollIntoView({ behavior:'smooth' }), 200);
+}
+
+function preencherSelectRevisao() {
+  const sel = document.getElementById('rev-deck-sel');
+  if (!sel) return;
+  sel.innerHTML = baralhos.length
+    ? baralhos.map(b => `<option value="${b.id}">${b.nome}</option>`).join('')
+    : '<option value="">Nenhum baralho disponível</option>';
+  if (revDeck) sel.value = revDeck.id;
+}
+
+function carregarRevisao() {
+  const id = document.getElementById('rev-deck-sel').value;
+  revDeck = getBaralho(id);
+}
+
+// ============================================================
+// SM-2 — ALGORITMO
+// ============================================================
+// qualidade: 0=Errei, 1=Quase, 2=Acertei
+function sm2(card, qualidade) {
+  const hoje = new Date().toDateString();
+  card.revisoes++;
+  if (qualidade === 0) {
+    card.estado = 'aprendendo';
+    card.intervalo = 1;
+    card.proxRevisao = hoje; // volta hoje mesmo
+  } else if (qualidade === 1) {
+    card.estado = 'aprendendo';
+    card.intervalo = 1;
+    card.proxRevisao = new Date(Date.now() + 86400000).toDateString();
+  } else {
+    card.acertos++;
+    card.facilidade = Math.max(1.3, card.facilidade + (0.1 - (2 - qualidade) * 0.08));
+    if (card.revisoes === 1) card.intervalo = 1;
+    else if (card.revisoes === 2) card.intervalo = 6;
+    else card.intervalo = Math.round(card.intervalo * card.facilidade);
+    // Estado
+    if (card.acertos >= 5 && card.intervalo >= 21) card.estado = 'dominado';
+    else card.estado = 'aprendendo';
+    const prox = new Date(Date.now() + card.intervalo * 86400000);
+    card.proxRevisao = prox.toDateString();
+  }
+  card.revisadoHoje = true;
+  return card;
+}
+
+// ============================================================
+// REVISÃO
+// ============================================================
+function iniciarRevisao() {
+  if (!revDeck) {
+    carregarRevisao();
+    if (!revDeck) { toast('Selecione um baralho'); return; }
+  }
+  const hoje = new Date().toDateString();
+  revFila = revDeck.cards.filter(c => c.proxRevisao <= hoje).sort(() => Math.random() - 0.5);
+  // Limitar a 20 cards por sessão
+  revFila = revFila.slice(0, 20);
+  revIdx = 0;
+  revCardVirado = false;
+
+  document.getElementById('rev-deck-select').style.display = 'none';
+  document.getElementById('rev-vazio').style.display = 'none';
+  document.getElementById('rev-fim').style.display = 'none';
+
+  if (!revFila.length) {
+    document.getElementById('rev-vazio').style.display = 'block';
+    return;
+  }
+  document.getElementById('rev-area').style.display = 'block';
+  atualizarStreak();
+  mostrarCard();
+}
+
+function mostrarCard() {
+  if (revIdx >= revFila.length) { finalizarRevisao(); return; }
+  const card = revFila[revIdx];
+  const total = revFila.length;
+  revCardVirado = false;
+  document.getElementById('rev-card').classList.remove('flipped');
+  document.getElementById('rev-btn-area').style.display = 'none';
+  document.getElementById('rev-pergunta').textContent = card.pergunta;
+  document.getElementById('rev-resposta').textContent = card.resposta;
+  document.getElementById('rev-counter').textContent = `${revIdx + 1} / ${total}`;
+  document.getElementById('rev-prog-fill').style.width = Math.round(revIdx / total * 100) + '%';
+  const estadoMap = { novo:'state-novo', aprendendo:'state-aprendendo', dominado:'state-dominado' };
+  const badge = document.getElementById('rev-state-badge');
+  badge.textContent = card.estado.charAt(0).toUpperCase() + card.estado.slice(1);
+  badge.className = 'fc-state-badge ' + (estadoMap[card.estado] || 'state-novo');
+}
+
+function virarCard() {
+  if (revCardVirado) return;
+  revCardVirado = true;
+  document.getElementById('rev-card').classList.add('flipped');
+  document.getElementById('rev-btn-area').style.display = 'block';
+}
+
+function avaliarCard(q) {
+  const card = revFila[revIdx];
+  sm2(card, q);
+  // XP
+  if (q === 2) { gamification.cardsHoje++; ganharXP(5, 'Card revisado'); }
+  salvarBaralhos();
+  salvarGamification();
+  revIdx++;
+  mostrarCard();
+}
+
+function finalizarRevisao() {
+  document.getElementById('rev-area').style.display = 'none';
+  document.getElementById('rev-fim').style.display = 'block';
+  const acertos = revFila.filter(c => c.revisadoHoje && c.estado !== 'novo').length;
+  document.getElementById('rev-fim-sub').textContent = `${revFila.length} cards revisados · ${acertos} acertos · +${revFila.length * 5} XP`;
+  ganharXP(50, 'Revisão do dia completa!');
+}
+
+// ============================================================
+// QUIZ
+// ============================================================
+function setQuizTipo(t) {
+  quizTipo = t;
+  ['mc','vf'].forEach(x => document.getElementById('qtipo-'+x).classList.toggle('selected', x===t));
+}
+
+function iniciarQuiz() {
+  if (!revDeck || !revDeck.cards.length) { toast('Selecione um baralho com cards'); return; }
+  const qtd = parseInt(document.getElementById('quiz-qtd').value);
+  const pool = [...revDeck.cards].sort(() => Math.random() - 0.5).slice(0, qtd);
+  quizQuestoes = pool;
+  quizIdx = 0; quizAcertos = 0; quizRespondida = false;
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('quiz-score-area').style.display = 'none';
+  renderQuizCard();
+}
+
+function renderQuizCard() {
+  if (quizIdx >= quizQuestoes.length) { mostrarScoreQuiz(); return; }
+  const card = quizQuestoes[quizIdx];
+  const area = document.getElementById('quiz-area');
+  quizRespondida = false;
+
+  if (quizTipo === 'mc') {
+    // Gerar 3 distradores dos outros cards
+    const outros = revDeck.cards.filter(c => c.id !== card.id).sort(() => Math.random() - 0.5).slice(0, 3);
+    const ops = [{ texto: card.resposta, correta: true }, ...outros.map(o => ({ texto: o.resposta, correta: false }))].sort(() => Math.random() - 0.5);
+    area.innerHTML = `
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Questão ${quizIdx+1} / ${quizQuestoes.length}</div>
+      <div style="font-size:15px;font-weight:500;margin-bottom:16px;line-height:1.6">${card.pergunta}</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        ${ops.map((op, i) => `
+          <div class="option-item" id="qopt-${i}" onclick="responderQuiz(${op.correta}, ${i})">
+            <div class="option-letter">${String.fromCharCode(65+i)}</div>
+            <div class="option-text">${op.texto}</div>
+          </div>`).join('')}
+      </div>
+      <div class="quiz-result-banner" id="quiz-banner"></div>
+      <div style="display:none;margin-top:14px" id="quiz-next-btn">
+        <button class="btn btn-primary-cacd" onclick="proximaQuiz()">Próxima →</button>
+      </div>`;
+  } else {
+    // VF: afirmação verdadeira ou falsa (aleatório)
+    const verdadeira = Math.random() > 0.5;
+    const afirmacao = verdadeira ? card.resposta : (revDeck.cards.find(c=>c.id!==card.id)||card).resposta;
+    area.innerHTML = `
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Questão ${quizIdx+1} / ${quizQuestoes.length}</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:6px">${card.pergunta}</div>
+      <div style="font-size:16px;font-weight:500;margin-bottom:18px;padding:14px;background:var(--bg3);border-radius:8px;line-height:1.6">"${afirmacao}"</div>
+      <div class="vf-options">
+        <button class="vf-btn" id="vf-v" onclick="responderVF(${verdadeira}, true)">✓ Verdadeiro</button>
+        <button class="vf-btn" id="vf-f" onclick="responderVF(${verdadeira}, false)">✗ Falso</button>
+      </div>
+      <div class="quiz-result-banner" id="quiz-banner"></div>
+      <div style="display:none;margin-top:14px" id="quiz-next-btn">
+        <button class="btn btn-primary-cacd" onclick="proximaQuiz()">Próxima →</button>
+      </div>`;
+  }
+}
+
+function responderQuiz(correta, idx) {
+  if (quizRespondida) return;
+  quizRespondida = true;
+  const opts = document.querySelectorAll('.option-item');
+  opts[idx].classList.add(correta ? 'correct' : 'wrong');
+  if (!correta) opts.forEach((el, i) => { if (i !== idx) el.classList.add('correct'); return; });
+  mostrarBannerQuiz(correta);
+  if (correta) { quizAcertos++; ganharXP(10, 'Acerto no quiz'); }
+  quizIdx++;
+  document.getElementById('quiz-next-btn').style.display = 'block';
+}
+
+function responderVF(verdadeira, resposta) {
+  if (quizRespondida) return;
+  quizRespondida = true;
+  const correta = verdadeira === resposta;
+  document.getElementById('vf-v').classList.add(verdadeira ? 'correct' : 'wrong');
+  document.getElementById('vf-f').classList.add(!verdadeira ? 'correct' : 'wrong');
+  mostrarBannerQuiz(correta);
+  if (correta) { quizAcertos++; ganharXP(10, 'Acerto no quiz'); }
+  quizIdx++;
+  document.getElementById('quiz-next-btn').style.display = 'block';
+}
+
+function mostrarBannerQuiz(correta) {
+  const b = document.getElementById('quiz-banner');
+  b.textContent = correta ? '✓ Correto!' : '✗ Incorreto';
+  b.className = 'quiz-result-banner visible ' + (correta ? 'banner-correct' : 'banner-wrong');
+}
+
+function proximaQuiz() { renderQuizCard(); }
+
+function mostrarScoreQuiz() {
+  document.getElementById('quiz-area').style.display = 'none';
+  const sc = document.getElementById('quiz-score-area');
+  sc.style.display = 'block';
+  const pct = Math.round(quizAcertos / quizQuestoes.length * 100);
+  const cor = pct >= 70 ? 'var(--green)' : pct >= 50 ? 'var(--cacd)' : 'var(--red)';
+  sc.innerHTML = `<div class="quiz-score-card">
+    <div class="quiz-score-num" style="color:${cor}">${pct}%</div>
+    <div style="font-size:14px;color:var(--muted)">${quizAcertos} de ${quizQuestoes.length} corretas</div>
+    <div style="font-size:13px;color:var(--cacd);font-weight:600;margin-top:10px">+${quizAcertos * 10} XP ganhos</div>
+    <button class="btn btn-secondary" style="margin-top:18px" onclick="iniciarQuiz()">Tentar novamente</button>
+  </div>`;
+  adicionarHistorico('quiz', 'Flashcards', `${quizAcertos}/${quizQuestoes.length} — ${revDeck.nome}`);
+}
+
+// ============================================================
+// PROGRESSO AVANÇADO
+// ============================================================
+function renderProgresso() {
+  renderXP();
+  renderDominio();
+  renderPrioridade();
+  renderConsistencia();
+  renderHistorico();
+}
+
+function renderDominio() {
+  const todosCards = baralhos.flatMap(b => b.cards);
+  const total = todosCards.length;
+  if (!total) {
+    ['dom-novo-n','dom-aprendendo-n','dom-dominado-n'].forEach(id => document.getElementById(id) && (document.getElementById(id).textContent = '0'));
+    if (document.getElementById('dom-pct-label')) document.getElementById('dom-pct-label').textContent = 'Nenhum flashcard ainda.';
+    return;
+  }
+  const novos = todosCards.filter(c=>c.estado==='novo').length;
+  const aprend = todosCards.filter(c=>c.estado==='aprendendo').length;
+  const domin = todosCards.filter(c=>c.estado==='dominado').length;
+  const pct = (n) => Math.round(n/total*100);
+  if (document.getElementById('dom-novo-n')) {
+    document.getElementById('dom-novo-n').textContent = novos;
+    document.getElementById('dom-aprendendo-n').textContent = aprend;
+    document.getElementById('dom-dominado-n').textContent = domin;
+    document.getElementById('dom-novo-bar').style.width = pct(novos) + '%';
+    document.getElementById('dom-aprendendo-bar').style.width = pct(aprend) + '%';
+    document.getElementById('dom-dominado-bar').style.width = pct(domin) + '%';
+    document.getElementById('dom-pct-label').textContent = `${pct(domin)}% dominado · ${total} cards no total`;
+  }
+}
+
+function renderPrioridade() {
+  const el = document.getElementById('prior-list');
+  if (!el) return;
+  if (!baralhos.length) { el.innerHTML = '<div style="font-size:13px;color:var(--muted)">Nenhum baralho ainda.</div>'; return; }
+  const por_baralho = baralhos.map(b => {
+    const total = b.cards.length;
+    if (!total) return null;
+    const domin = b.cards.filter(c=>c.estado==='dominado').length;
+    const pct = Math.round(domin / total * 100);
+    return { nome: b.nome, pct, frente: b.frente };
+  }).filter(Boolean).sort((a,b) => a.pct - b.pct);
+  el.innerHTML = por_baralho.map(b => `
+    <div class="prior-item">
+      <div class="prior-badge" style="background:${b.frente==='cacd'?'var(--cacd)':'var(--dir)'}"></div>
+      <div class="prior-name">${b.nome}</div>
+      <div style="flex:2;margin:0 10px"><div style="height:4px;background:var(--bg3);border-radius:2px;overflow:hidden"><div style="height:100%;width:${b.pct}%;background:${b.frente==='cacd'?'var(--cacd)':'var(--dir)'};border-radius:2px"></div></div></div>
+      <div class="prior-pct">${b.pct}%</div>
+    </div>`).join('');
+}
+
+function renderConsistencia() {
+  const el = document.getElementById('consist-grid');
+  if (!el) return;
+  const hoje = new Date();
+  const dias = Array.from({length:30},(_,i) => {
+    const d = new Date(hoje);
+    d.setDate(hoje.getDate() - (29 - i));
+    return d.toDateString();
+  });
+  el.innerHTML = dias.map(d => {
+    const estudou = gamification.diasEstudados.includes(d);
+    const ehHoje = d === hoje.toDateString();
+    return `<div class="consist-day${estudou?' estudou':''}${ehHoje?' hoje':''}" title="${d}"></div>`;
+  }).join('');
+}
+
+// ============================================================
+// INTEGRAR BARALHOS AO MATERIAL DE ESTUDO
+// ============================================================
+// Sobrescrever salvarMaterialGerado para também criar baralho se for flashcards
+const _origSalvarMatGerado = salvarMaterialGerado;
+salvarMaterialGerado = function() {
+  if (!materialGeradoAtual) return;
+  // Salvar material
+  materiaisSalvos.unshift(materialGeradoAtual);
+  if (materiaisSalvos.length > 50) materiaisSalvos.pop();
+  localStorage.setItem('estuda_materiais_salvos', JSON.stringify(materiaisSalvos));
+  syncMaterialSalvo(materialGeradoAtual);
+  // Se for flashcards, criar baralho SM-2
+  if (materialGeradoAtual.tipo === 'flashcards') {
+    try {
+      const data = JSON.parse(materialGeradoAtual.conteudoRaw.replace(/```json|```/g,'').trim());
+      const b = criarBaralho(
+        materialGeradoAtual.matNome + ' — ' + materialGeradoAtual.unidade,
+        materialGeradoAtual.frente,
+        materialGeradoAtual.matId,
+        materialGeradoAtual.matNome,
+        data.flashcards
+      );
+      preencherSelectRevisao();
+      toast(`✓ Baralho "${b.nome}" criado com ${b.cards.length} cards`);
+    } catch(e) { toast('✓ Material salvo'); }
+  } else {
+    toast('✓ Material salvo');
+  }
+};
+
+// ============================================================
+// TITULOS E GOTO — adicionar novos painéis
 // ============================================================
 let sb = null;
 let currentUser = null;
@@ -2133,6 +3279,15 @@ async function logout() {
 async function carregarDoSupabase() {
   if (!sb || !currentUser) return;
   try {
+    // Programas
+    const { data: progs } = await sb.from('programas').select('*').eq('user_id', currentUser.id).order('criado_em');
+    if (progs && progs.length) {
+      programas = progs.map(p => ({ id: p.id, nome: p.nome, tipo: p.tipo, instituicao: p.instituicao||'', ano: p.ano||'', ativo: p.ativo }));
+      const ativo = progs.find(p => p.ativo);
+      if (ativo) { programaAtivoId = ativo.id; modo = ativo.id; }
+      localStorage.setItem('estuda_programas', JSON.stringify(programas));
+      localStorage.setItem('estuda_programa_ativo', programaAtivoId);
+    }
     // Períodos
     const { data: pers } = await sb.from('periodos').select('*').eq('user_id', currentUser.id).order('numero');
     if (pers && pers.length) {
@@ -2141,11 +3296,14 @@ async function carregarDoSupabase() {
       periodoAtivo = ativo ? ativo.id : null;
       salvarPeriodosLocal();
     }
-    // Matérias (incluir periodo_id)
+    // Matérias (com programa_id)
     const { data: mats } = await sb.from('materias').select('*').eq('user_id', currentUser.id);
     if (mats && mats.length) {
       materias = mats.map(m => ({
-        id: m.id, nome: m.nome, frente: m.frente, periodoId: m.periodo_id||null,
+        id: m.id, nome: m.nome,
+        programaId: m.programa_id || m.frente,
+        frente: m.programa_id || m.frente,
+        periodoId: m.periodo_id||null,
         topicos: { n1: m.topicos_n1||[], n2: m.topicos_n2||[], n3: m.topicos_n3||[] }
       }));
       localStorage.setItem('estuda_materias', JSON.stringify(materias));
@@ -2159,7 +3317,7 @@ async function carregarDoSupabase() {
     // Histórico
     const { data: hist } = await sb.from('historico').select('*').eq('user_id', currentUser.id).order('criado_em', { ascending: false }).limit(30);
     if (hist) {
-      historico = hist.map(h => ({ tipo: h.tipo, frente: h.frente, detalhe: h.detalhe, data: new Date(h.criado_em).toLocaleDateString('pt-BR') }));
+      historico = hist.map(h => ({ tipo: h.tipo, frente: h.frente||h.programa_id, detalhe: h.detalhe, data: new Date(h.criado_em).toLocaleDateString('pt-BR') }));
       localStorage.setItem('estuda_historico', JSON.stringify(historico));
     }
     // Preferências
@@ -2167,14 +3325,24 @@ async function carregarDoSupabase() {
     if (pref) {
       if (pref.theme) setTheme(pref.theme);
       if (pref.anthropic_key) { apiKey = pref.anthropic_key; localStorage.setItem('estuda_api_key', apiKey); }
+      if (pref.programa_ativo_id) { programaAtivoId = pref.programa_ativo_id; modo = programaAtivoId; }
     }
     // Materiais salvos
     const { data: mSalvos } = await sb.from('materiais_salvos').select('*').eq('user_id', currentUser.id).order('criado_em', { ascending: false }).limit(50);
     if (mSalvos) {
-      materiaisSalvos = mSalvos.map(m => ({ tipo: m.tipo, frente: m.frente, matId: m.materia_id, matNome: m.mat_nome, unidade: m.unidade, conteudoRaw: m.conteudo_raw, data: m.criado_em }));
+      materiaisSalvos = mSalvos.map(m => ({
+        tipo: m.tipo,
+        frente: m.programa_id || m.frente,
+        programaId: m.programa_id || m.frente,
+        matId: m.materia_id, matNome: m.mat_nome, unidade: m.unidade,
+        conteudoRaw: m.conteudo_raw, data: m.criado_em
+      }));
       localStorage.setItem('estuda_materiais_salvos', JSON.stringify(materiaisSalvos));
     }
-    renderStats(); renderHistorico(); renderProgresso(); preencherSelectMaterias(); atualizarSelectMatMaterial();
+    renderToggleProgramas();
+    sincronizarPaineisModo();
+    renderStats(); renderHistorico(); renderProgresso();
+    preencherSelectMaterias(); atualizarSelectMatMaterial();
     toast('✓ Dados sincronizados');
   } catch(e) { console.warn('Sync error:', e); }
 }
@@ -2186,14 +3354,25 @@ async function syncToSupabase() {
   if (!sb || !currentUser || !isOnline) return;
   const uid = currentUser.id;
   try {
+    // Programas (upsert)
+    if (programas.length) {
+      const progsDb = programas.map(p => ({
+        id: p.id, user_id: uid, nome: p.nome, tipo: p.tipo,
+        instituicao: p.instituicao||null, ano: p.ano||null,
+        ativo: p.id === programaAtivoId
+      }));
+      await sb.from('programas').upsert(progsDb, { onConflict: 'id' });
+    }
     // Períodos (upsert)
     if (periodos.length) {
       const persDb = periodos.map(p => ({ id: p.id, user_id: uid, numero: p.numero, descricao: p.descricao||null, ativo: p.id === periodoAtivo }));
       await sb.from('periodos').upsert(persDb, { onConflict: 'id' });
     }
-    // Matérias (upsert com periodo_id)
+    // Matérias (upsert com programa_id)
     const matsDb = materias.map(m => ({
-      id: m.id, user_id: uid, nome: m.nome, frente: m.frente,
+      id: m.id, user_id: uid, nome: m.nome,
+      frente: m.programaId || m.frente,
+      programa_id: m.programaId || m.frente,
       periodo_id: m.periodoId||null,
       topicos_n1: m.topicos.n1||[], topicos_n2: m.topicos.n2||[], topicos_n3: m.topicos.n3||[]
     }));
@@ -2205,7 +3384,8 @@ async function syncToSupabase() {
       user_id: uid,
       theme: localStorage.getItem('estuda_theme') || 'dark',
       anthropic_key: apiKey,
-      periodo_ativo_id: periodoAtivo || null
+      periodo_ativo_id: periodoAtivo || null,
+      programa_ativo_id: programaAtivoId || null
     }, { onConflict: 'user_id' });
   } catch(e) { console.warn('Sync write error:', e); }
 }
@@ -2213,7 +3393,13 @@ async function syncToSupabase() {
 async function syncHistoricoItem(item) {
   if (!sb || !currentUser || !isOnline) return;
   try {
-    await sb.from('historico').insert({ user_id: currentUser.id, tipo: item.tipo, frente: item.frente, detalhe: item.detalhe });
+    await sb.from('historico').insert({
+      user_id: currentUser.id,
+      tipo: item.tipo,
+      frente: item.frente,
+      programa_id: item.programaId || programaAtivoId || null,
+      detalhe: item.detalhe
+    });
   } catch(e) {}
 }
 
